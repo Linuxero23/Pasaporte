@@ -1,5 +1,4 @@
 package app;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -8,7 +7,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import modelo.Pasaporte;
 import repositorio.PasaporteRepositorio;
-
 public class Main extends Application {
     private PasaporteRepositorio repositorio = new PasaporteRepositorio();
 
