@@ -9,7 +9,17 @@ public class ConexionBD {
     private static final String USER = "postgres.jcrgllisixmujsjvxxht";
     private static final String PASSWORD = "edwar1032797762";
 
+
+    private static Connection connection;
+
+
+    private ConexionBD() {}
+
+
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        if (connection == null || connection.isClosed()) {
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        }
+        return connection;
     }
 }
