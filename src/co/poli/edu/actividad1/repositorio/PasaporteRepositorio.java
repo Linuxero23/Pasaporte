@@ -107,4 +107,14 @@ public class PasaporteRepositorio implements Operacion<Pasaporte> {
 
         return pasaportes;
     }
+    @Override
+    public List<Pasaporte> seleccionarConCaracter(char c){
+        List<Pasaporte> pasaportes = seleccionarTodos();
+        List<Pasaporte> filtro=new LinkedList<>();
+        for(Pasaporte p:pasaportes){
+            if(p.getId().contains(""+c))
+                filtro.add(p);
+        }
+        return filtro;
+    }
 }
