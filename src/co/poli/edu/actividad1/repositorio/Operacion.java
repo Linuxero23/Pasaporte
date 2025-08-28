@@ -6,4 +6,5 @@ public interface Operacion<T> {
     String eliminar(String id);
     T seleccionar(String id);
     java.util.List<T> seleccionarTodos();
+    java.util.List<T> seleccionarConCaracter(char c);
 }
