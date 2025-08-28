@@ -1,0 +1,21 @@
+*   [33me0b6f8a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Resuelvo conflictos quedándome con la versión remota
+[31m|[m[32m\[m  
+[31m|[m * [33m3283c90[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update Main.java
+[31m|[m * [33md2b5f1a[m Update PasaporteRepositorio.java
+[31m|[m * [33m25888d4[m Update Pasaporte.java
+[31m|[m * [33med59ff9[m Primer commit con integración del proyecto
+*   [33mf1cccd5[m Merge remote-tracking branch 'origin/main'
+[33m|[m[34m\[m  
+[33m|[m * [33m61f52ce[m Update Main.java
+* [34m|[m [33ma5efeb7[m Merge remote-tracking branch 'origin/main'
+[35m|[m[34m\[m[34m|[m 
+[35m|[m *   [33m04af259[m Merge branch 'main' of https://github.com/Linuxero23/Pasaporte
+[35m|[m [1;31m|[m[1;32m\[m  
+[35m|[m [1;31m|[m * [33md18ee31[m Delete 11212
+[35m|[m [1;31m|[m * [33mfeac297[m Create 11212
+[35m|[m * [1;32m|[m [33m5d1816e[m Agregada clase PasaporteRepositorio con conexión a Supabase
+[35m|[m [1;32m|[m[1;32m/[m  
+* [1;32m/[m [33m8d4478c[m Mis cambios locales
+[1;32m|[m[1;32m/[m  
+* [33m4e8b3d8[m Primera versión del proyecto Pasaporte con conexión a Supabase
+* [33m45798e7[m Initial commit
