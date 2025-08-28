@@ -1,7 +1,7 @@
 package co.poli.edu.actividad1.repositorio;
 
 import co.poli.edu.actividad1.modelo.Pasaporte;
-import co.poli.edu.actividad1.config.ConexionBD;
+import co.poli.edu.actividad1.servicios.ConexionBD;
 
 import java.sql.*;
 import java.util.LinkedList;

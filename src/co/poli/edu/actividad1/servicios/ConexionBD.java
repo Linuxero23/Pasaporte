@@ -1,4 +1,4 @@
-package co.poli.edu.actividad1.config;
+package co.poli.edu.actividad1.servicios;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
