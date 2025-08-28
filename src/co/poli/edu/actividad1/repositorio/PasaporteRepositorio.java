@@ -1,7 +1,7 @@
 package co.poli.edu.actividad1.repositorio;
 
 import co.poli.edu.actividad1.modelo.Pasaporte;
-import co.poli.edu.actividad1.servicios.ConexionBD;
+import co.poli.edu.actividad1.config.ConexionBD;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -30,8 +30,11 @@ public class PasaporteRepositorio implements Operacion<Pasaporte> {
     }
 
     @Override
-    public String actualizar(Pasaporte pasaporte) {
-        return "No implementado todavía";
+    public String actualizar(String id, Pasaporte pasaporte) {
+        pasaporte.setId(id);
+        eliminar(id);
+        insertar(pasaporte);
+        return "Pasaporte acualizado con exito";
     }
 
     @Override
@@ -117,4 +120,5 @@ public class PasaporteRepositorio implements Operacion<Pasaporte> {
         }
         return filtro;
     }
+
 }
