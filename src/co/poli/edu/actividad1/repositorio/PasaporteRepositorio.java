@@ -6,7 +6,7 @@ import co.poli.edu.actividad1.servicios.*;
 import java.sql.*;
 import java.util.*;
 
-public class PasaporteRepositorio implements Operacion<Pasaporte> {
+public class PasaporteRepositorio implements Metodos<Pasaporte> {
     CreatorPasaporteOrdinario cpo=new CreatorPasaporteOrdinario();
     CreatorPasaporteDiplomatico cpd=new CreatorPasaporteDiplomatico();
     boolean flag=true;
