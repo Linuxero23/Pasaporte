@@ -250,7 +250,7 @@ public class PasaporteRepositorio implements Operacion<Pasaporte> {
     public List<Pasaporte> seleccionarTodos() {
         List<Pasaporte> pasaportes = new ArrayList<>();
 
-        String sqlPasaporte = "SELECT id_pasaporte, codigo_pasaporte, id_titular, id_pais, fecha_de_expiracion FROM pasaporte";
+        String sqlPasaporte = "SELECT * FROM pasaporte";
         String sqlOrdinario = "SELECT motivo_de_viaje FROM pasaporte_ordinario WHERE id_pasaporte = ?";
         String sqlDiplomatico = "SELECT mision FROM pasaporte_diplomatico WHERE id_pasaporte = ?";
 
@@ -264,9 +264,6 @@ public class PasaporteRepositorio implements Operacion<Pasaporte> {
                 int idTitular = rs.getInt("id_titular");
                 int idPais = rs.getInt("id_pais");
                 String fechaExp = rs.getString("fecha_de_expiracion");
-
-
-                // 1️⃣ Ver si es ordinario
                 int f=-1;
                 try (PreparedStatement stmtOrd = conn.prepareStatement(sqlOrdinario)) {
                     stmtOrd.setLong(1, idPasaporte);
@@ -284,8 +281,6 @@ public class PasaporteRepositorio implements Operacion<Pasaporte> {
                         }
                     }
                 }
-
-                // 2️⃣ Si no fue ordinario, ver si es diplomático
                 if (f == -1) {
                     try (PreparedStatement stmtDip = conn.prepareStatement(sqlDiplomatico)) {
                         stmtDip.setLong(1, idPasaporte);
@@ -318,14 +313,73 @@ public class PasaporteRepositorio implements Operacion<Pasaporte> {
 
 
     @Override
-    public List<Pasaporte> seleccionarConCaracter(char c){
-        List<Pasaporte> pasaportes = seleccionarTodos();
-        List<Pasaporte> filtro=new LinkedList<>();
-        for(Pasaporte p:pasaportes){
-            if(p.getId().contains(""+c))
-                filtro.add(p);
+    public List<Pasaporte> seleccionarConCaracter(char ch) {
+        List<Pasaporte> pasaportes = new ArrayList<>();
+
+        String sqlPasaporte = "SELECT * FROM pasaporte WHERE codigo_pasaporte LIKE ?";
+        String sqlOrdinario = "SELECT motivo_de_viaje FROM pasaporte_ordinario WHERE id_pasaporte = ?";
+        String sqlDiplomatico = "SELECT mision FROM pasaporte_diplomatico WHERE id_pasaporte = ?";
+
+        try (Connection conn = ConexionBD.getConnection();
+             PreparedStatement stmtPasaporte = conn.prepareStatement(sqlPasaporte)) {
+
+            stmtPasaporte.setString(1, "%" + ch + "%");
+
+            try (ResultSet rs = stmtPasaporte.executeQuery()) {
+                while (rs.next()) {
+                    long idPasaporte = rs.getLong("id_pasaporte");
+                    String codigo = rs.getString("codigo_pasaporte");
+                    int idTitular = rs.getInt("id_titular");
+                    int idPais = rs.getInt("id_pais");
+                    String fechaExp = rs.getString("fecha_de_expiracion");
+
+                    int f=-1;
+                    try (PreparedStatement stmtOrd = conn.prepareStatement(sqlOrdinario)) {
+                        stmtOrd.setLong(1, idPasaporte);
+                        try (ResultSet rsOrd = stmtOrd.executeQuery()) {
+                            if (rsOrd.next()) {
+                                f=0;
+                                String razon = rsOrd.getString("motivo_de_viaje");
+                                PasaporteOrdinario po=(PasaporteOrdinario) cpo.crearPasaporte();
+                                po.setRazonDeViaje(razon);
+                                po.setId(codigo);
+                                po.setTitular(idTitular);
+                                po.setPais(idPais);
+                                po.setFechaEx(fechaExp);
+                                pasaportes.add(po);
+                            }
+                        }
+                    }
+                    if (f == -1) {
+                        try (PreparedStatement stmtDip = conn.prepareStatement(sqlDiplomatico)) {
+                            stmtDip.setLong(1, idPasaporte);
+                            try (ResultSet rsDip = stmtDip.executeQuery()) {
+                                if (rsDip.next()) {
+                                    String mision = rsDip.getString("mision");
+                                    PasaporteDiplomatico pd=(PasaporteDiplomatico) cpd.crearPasaporte();
+                                    pd.setMision(mision);
+                                    pd.setId(codigo);
+                                    pd.setTitular(idTitular);
+                                    pd.setPais(idPais);
+                                    pd.setFechaEx(fechaExp);
+                                    pasaportes.add(pd);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            if(flag){
+                flag=false;
+                return seleccionarConCaracter(ch);
+            }
+            e.printStackTrace();
         }
-        return filtro;
+
+        return pasaportes;
     }
+
 
 }
