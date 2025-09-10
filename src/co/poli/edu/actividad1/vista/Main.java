@@ -1,30 +1,35 @@
 package co.poli.edu.actividad1.vista;
 import java.util.*;
 
-import co.poli.edu.actividad1.modelo.Pasaporte;
-import co.poli.edu.actividad1.repositorio.PasaporteRepositorio;
-import co.poli.edu.actividad1.modelo.Titular;
-import co.poli.edu.actividad1.modelo.Ciudad;
-import co.poli.edu.actividad1.modelo.Pais;
+import co.poli.edu.actividad1.modelo.*;
+import co.poli.edu.actividad1.repositorio.*;
+import co.poli.edu.actividad1.servicios.*;
 
 public class Main  {
+    static CreatorPasaporteOrdinario cpo=new CreatorPasaporteOrdinario();
+    static CreatorPasaporteDiplomatico dpo=new CreatorPasaporteDiplomatico();
     private static PasaporteRepositorio repositorio = new PasaporteRepositorio();
     public static void main(String[] args) throws InterruptedException {
-        List<Ciudad> lst_ciudades=new ArrayList<>();
-        lst_ciudades.add(new Ciudad("1","Bogotá"));
-        lst_ciudades.add(new Ciudad("2","Chiquinquira"));
-        lst_ciudades.add(new Ciudad("3","Granada"));
-        lst_ciudades.add(new Ciudad("4","Mariquita"));
-        Pais Colombia=new Pais("1","Colombia",lst_ciudades);
-        Titular marg=new Titular("1","Margaret Corasick","13/05/1945");
-        Pasaporte pasaporte=new Pasaporte("1","27/08/2035",marg, Colombia);
-        List<Pasaporte> s=seleccionarTodos();
-        for(Pasaporte p:s)
+        String id="JNASDQIWEASDOP";
+        int idPais=103;
+        int idTitular=101;
+        String fecha="05/09/2032";
+        String razon="PA CHIA";
+        PasaporteDiplomatico pd= (PasaporteDiplomatico) dpo.crearPasaporte();
+        PasaporteOrdinario po = (PasaporteOrdinario) cpo.crearPasaporte();
+        po.setId(id);
+        po.setFechaEx(fecha);
+        po.setPais(idPais);
+        po.setTitular(idTitular);
+        po.setRazonDeViaje(razon);
+        System.out.println(insertar(po));
+        //System.out.println(eliminar("PKSP123NA"));
+        //System.out.println(seleccionar("NAD812JAW12"));
+        for(Pasaporte p:seleccionarConCaracter('W'))
             System.out.println(p);
     }
-    static String insertar(Pasaporte pasaporte) {
-        return repositorio.insertar(pasaporte);
-    }
+    static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
+    static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}
     static String eliminar(String id){
         return repositorio.eliminar(id);
     }
@@ -34,5 +39,6 @@ public class Main  {
     static List<Pasaporte> seleccionarTodos(){
         return repositorio.seleccionarTodos();
     }
+    static List<Pasaporte> seleccionarConCaracter(char ch){return repositorio.seleccionarConCaracter(ch);}
 
 }
