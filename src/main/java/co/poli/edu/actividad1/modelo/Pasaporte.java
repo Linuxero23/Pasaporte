@@ -4,10 +4,13 @@ public abstract class Pasaporte {
     protected int id_titular;
     protected String fechaEx;
     protected int pais;
+
     public String toString(){
         return "["+id+","+id_titular+","+pais+","+fechaEx+"]";
     }
-    public int getTitular(){return id_titular;}
+    public int getTitular(){
+        return id_titular;
+    }
     public String getId() { return id; }
     public String getFechaEx() { return fechaEx; }
     public int getPais() { return pais; }

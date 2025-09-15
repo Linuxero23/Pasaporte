@@ -2,7 +2,6 @@ package co.poli.edu.actividad1.repositorio;
 
 import co.poli.edu.actividad1.modelo.*;
 import co.poli.edu.actividad1.servicios.*;
-
 import java.sql.*;
 import java.util.*;
 
@@ -246,6 +245,7 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
         }
         return null;
     }
+
     @Override
     public List<Pasaporte> seleccionarTodos() {
         List<Pasaporte> pasaportes = new ArrayList<>();
