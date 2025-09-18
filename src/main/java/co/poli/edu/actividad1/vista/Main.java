@@ -5,36 +5,6 @@ import java.util.*;
 import co.poli.edu.actividad1.modelo.*;
 import co.poli.edu.actividad1.repositorio.*;
 import co.poli.edu.actividad1.servicios.*;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-public class Main extends Application {
-
-    @Override
-    public void start(Stage primaryStage) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/co/poli/edu/actividad1/vista/menu.fxml"));
-            Parent root = loader.load();
-
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Gestión de Pasaportes");
-            primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
-
-/*
-
 
 public class Main  {
     static CreatorPasaporteOrdinario cpo=new CreatorPasaporteOrdinario();
@@ -73,7 +43,7 @@ public class Main  {
     static List<Pasaporte> seleccionarConCaracter(char ch){return repositorio.seleccionarConCaracter(ch);}
 
 }
-*/
+
 
 
 
