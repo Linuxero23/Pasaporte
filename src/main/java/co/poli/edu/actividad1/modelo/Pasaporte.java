@@ -4,7 +4,14 @@ public abstract class Pasaporte {
     protected int id_titular;
     protected String fechaEx;
     protected int pais;
+    private String idElemento;
 
+    public void setElemento(String id) {
+        idElemento = id;
+    }
+    public String getIdElemento(){
+        return idElemento;
+    }
     public String toString(){
         return "["+id+","+id_titular+","+pais+","+fechaEx+"]";
     }

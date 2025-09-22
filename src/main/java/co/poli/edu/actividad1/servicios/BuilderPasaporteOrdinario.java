@@ -49,6 +49,7 @@ public class BuilderPasaporteOrdinario implements Builder<Pasaporte>{
         p.setTitular(this.idTitular);
         p.setPais(this.idPais);
         p.setRazonDeViaje(this.razonDeViaje);
+        p.setElemento(this.idElemento);
         return p;
     }
 }

@@ -11,7 +11,7 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
     boolean flag=true;
     @Override
     public String insertar(Pasaporte pasaporte) {
-        String sqlPasaporte = "INSERT INTO pasaporte (codigo_pasaporte,id_titular, id_pais, fecha_de_expiracion) VALUES (?,?, ?, ?)";
+        String sqlPasaporte = "INSERT INTO pasaporte (codigo_pasaporte,id_titular, id_pais, fecha_de_expiracion,elemento_de_seguridad) VALUES (?,?, ?, ?,?)";
         String sqlOrdinario = "INSERT INTO pasaporte_ordinario (id_pasaporte, motivo_de_viaje) VALUES (?, ?)";
         String sqlDiplomatico = "INSERT INTO pasaporte_diplomatico (id_pasaporte, mision) VALUES (?, ?)";
 
@@ -25,6 +25,7 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
                 stmt.setInt(2, pasaporte.getTitular()); // FK al titular
                 stmt.setInt(3, pasaporte.getPais());    // FK al país
                 stmt.setString(4, pasaporte.getFechaEx());
+                stmt.setString(5, pasaporte.getIdElemento());
                 stmt.executeUpdate()        ;
 
                 try (ResultSet rs = stmt.getGeneratedKeys()) {
