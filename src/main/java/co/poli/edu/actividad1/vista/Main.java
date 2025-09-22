@@ -11,23 +11,14 @@ public class Main  {
     static CreatorPasaporteDiplomatico dpo=new CreatorPasaporteDiplomatico();
     private static PasaporteRepositorio repositorio = new PasaporteRepositorio();
     public static void main(String[] args) throws InterruptedException {
-        String id="KKKKKK";
-        int idPais=102;
-        int idTitular=102;
-        String fecha="13/09/2025";
-        String razon="PA LEONAS";
-        PasaporteDiplomatico pd= (PasaporteDiplomatico) dpo.crearPasaporte();
-        PasaporteOrdinario po = (PasaporteOrdinario) cpo.crearPasaporte();
-        po.setId(id);
-        po.setFechaEx(fecha);
-        po.setPais(idPais);
-        po.setTitular(idTitular);
-        po.setRazonDeViaje(razon);
-        System.out.println(insertar(po));
-        //System.out.println(eliminar("PKSP123NA"));
-        //System.out.println(seleccionar("NAD812JAW12"));
-        for(Pasaporte p:seleccionarConCaracter('W'))
-            System.out.println(p);
+        BuilderPasaporteOrdinario bld = new BuilderPasaporteOrdinario();
+        bld.setIdPasaporte("LOVE");
+        bld.setFechaPasaporte("14/05/2031");
+        bld.setRazonDeViaje("Soto lo pidio");
+        bld.setIdTitular(101);
+        bld.setIdPais(101);
+        bld.setElemento("1021");
+        System.out.println(insertar(bld.build()));
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
     static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}
@@ -43,7 +34,3 @@ public class Main  {
     static List<Pasaporte> seleccionarConCaracter(char ch){return repositorio.seleccionarConCaracter(ch);}
 
 }
-
-
-
-
