@@ -12,7 +12,7 @@ public class Main  {
     private static PasaporteRepositorio repositorio = new PasaporteRepositorio();
     public static void main(String[] args) throws InterruptedException {
         BuilderPasaporteOrdinario bld = new BuilderPasaporteOrdinario();
-        bld.setIdPasaporte("SOTO1234");
+        bld.setIdPasaporte("1235SOTO");
         bld.setFechaPasaporte("14/05/2031");
         bld.setRazonDeViaje("Soto lo pidio");
         bld.setIdTitular(101);

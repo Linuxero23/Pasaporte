@@ -2,54 +2,42 @@ package co.poli.edu.actividad1.servicios;
 import co.poli.edu.actividad1.modelo.*;
 
 public class BuilderPasaporteOrdinario implements Builder<Pasaporte>{
-    private String idPasaporte;
-    private String fechaPasaporte;
-    private int idTitular;
-    private int idPais;
-    private String razonDeViaje;
-    private String idElemento;
+    private PasaporteOrdinario p=new PasaporteOrdinario();
     @Override
     public Builder<Pasaporte> setIdPasaporte(String id) {
-        this.idPasaporte = id;
+        this.p.setId(id);
         return this;
     }
 
     @Override
     public Builder<Pasaporte> setFechaPasaporte(String fecha) {
-        this.fechaPasaporte = fecha;
+        this.p.setFechaEx(fecha);
         return this;
     }
 
     @Override
     public Builder<Pasaporte> setIdTitular(int idTitular) {
-        this.idTitular = idTitular;
+        this.p.setTitular(idTitular);
         return this;
     }
 
     @Override
     public Builder<Pasaporte> setIdPais(int idPais) {
-        this.idPais = idPais;
+        this.p.setPais(idPais);
         return this;
     }
 
     public Builder<Pasaporte> setRazonDeViaje(String razonDeViaje) {
-        this.razonDeViaje = razonDeViaje;
+        this.p.setRazonDeViaje(razonDeViaje);
         return this;
     }
     public Builder<Pasaporte> setElemento(String idElemento) {
-        this.idElemento = idElemento;
+        this.p.setElemento(idElemento);
         return this;
     }
 
     @Override
     public PasaporteOrdinario build() {
-        PasaporteOrdinario p = new PasaporteOrdinario();
-        p.setId(this.idPasaporte);
-        p.setFechaEx( this.fechaPasaporte);
-        p.setTitular(this.idTitular);
-        p.setPais(this.idPais);
-        p.setRazonDeViaje(this.razonDeViaje);
-        p.setElemento(this.idElemento);
         return p;
     }
 }
