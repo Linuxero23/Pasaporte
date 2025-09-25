@@ -2,7 +2,10 @@ package co.poli.edu.actividad1.servicios;
 import co.poli.edu.actividad1.modelo.*;
 
 public class BuilderPasaporteOrdinario implements Builder<Pasaporte>{
-    private PasaporteOrdinario p=new PasaporteOrdinario();
+    private PasaporteOrdinario p;
+    public BuilderPasaporteOrdinario(){
+        p=new PasaporteOrdinario();
+    }
     @Override
     public Builder<Pasaporte> setIdPasaporte(String id) {
         this.p.setId(id);
