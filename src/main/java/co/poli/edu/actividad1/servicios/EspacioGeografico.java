@@ -18,11 +18,15 @@ public abstract class EspacioGeografico {
     public List<EspacioGeografico> getArbolJerarquico(){
         LinkedList<EspacioGeografico> lst=new LinkedList<>();
         helper(lst,padre);
+        lst.add(this);
         return lst;
     }
     private void helper(LinkedList<EspacioGeografico>lst,EspacioGeografico root){
         if(root==null)return;
         lst.addFirst(root);
         helper(lst,root.padre);
+    }
+    public String toString(){
+        return nombre;
     }
 }
