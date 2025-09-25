@@ -7,8 +7,6 @@ import co.poli.edu.actividad1.repositorio.*;
 import co.poli.edu.actividad1.servicios.*;
 
 public class Main  {
-    static CreatorPasaporteOrdinario cpo=new CreatorPasaporteOrdinario();
-    static CreatorPasaporteDiplomatico dpo=new CreatorPasaporteDiplomatico();
     private static PasaporteRepositorio repositorio = new PasaporteRepositorio();
     public static void main(String[] args) throws InterruptedException {
         Region pais = new Region("Colombia");
@@ -23,15 +21,9 @@ public class Main  {
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
     static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}
-    static String eliminar(String id){
-        return repositorio.eliminar(id);
-    }
-    static Pasaporte seleccionar(String id){
-        return repositorio.seleccionar(id);
-    }
-    static List<Pasaporte> seleccionarTodos(){
-        return repositorio.seleccionarTodos();
-    }
+    static String eliminar(String id){return repositorio.eliminar(id);}
+    static Pasaporte seleccionar(String id){return repositorio.seleccionar(id);}
+    static List<Pasaporte> seleccionarTodos(){return repositorio.seleccionarTodos();}
     static List<Pasaporte> seleccionarConCaracter(char ch){return repositorio.seleccionarConCaracter(ch);}
 
 }
