@@ -2,7 +2,7 @@ package co.poli.edu.actividad1.controlador;
 
 import co.poli.edu.actividad1.modelo.*;
 import co.poli.edu.actividad1.repositorio.PasaporteRepositorio;
-import co.poli.edu.actividad1.servicios.FactoriaPasaporte;
+import co.poli.edu.actividad1.servicios.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -25,10 +25,9 @@ public class Controladormenu {
     private Button btt5; //Consultar todos
 
     @FXML
-    private MenuItem opt1; // Diplomático
-
+    private Button btt6;
     @FXML
-    private MenuItem opt2; // Ordinario
+    private Button btt7;
 
     @FXML
     private SplitMenuButton split;
@@ -40,18 +39,77 @@ public class Controladormenu {
     private TextField txt2; // Nombre o titular
 
     @FXML
-    private TextField txt3; // Misión o motivo de viaje
+    private TreeView<EspacioGeografico> treePaises;
 
+    @FXML
+    private TextField txt3; // Misión o motivo de viaje
+    private EspacioGeografico cur;
     private final PasaporteRepositorio repo = new PasaporteRepositorio();
     private String tipoSeleccionado = "";
+    public void showTree() {
+        Region raiz=new Region("Colombia");
+        Region region1=new Region("Andina");
+        Region region2=new Region("Orinoquia");
+        Region region3=new Region("Cundinamarca");
+        Region region4=new Region("Tolima");
+        Region region5=new Region("Meta");
+        CiudadLeaf ciudad1=new AdaptadorCiudad(new Ciudad("1","Bogota"));
+        CiudadLeaf ciudad2=new AdaptadorCiudad(new Ciudad("2","Chia"));
+        CiudadLeaf ciudad3=new AdaptadorCiudad(new Ciudad("3","Acacias"));
+        CiudadLeaf ciudad4=new AdaptadorCiudad(new Ciudad("4","Villavicencio"));
+        CiudadLeaf ciudad5=new AdaptadorCiudad(new Ciudad("5","Ibague"));
+        CiudadLeaf ciudad6=new AdaptadorCiudad(new Ciudad("6","Mariquita"));
+        CiudadLeaf ciudad7=new AdaptadorCiudad(new Ciudad("7","Cartagena"));
+        raiz.add(region1);
+        raiz.add(region2);
+        raiz.add(ciudad7);
+        region1.add(region3);
+        region1.add(region4);
+        region2.add(region5);
+        region3.add(ciudad1);
+        region3.add(ciudad2);
+        region5.add(ciudad3);
+        region5.add(ciudad4);
+        region4.add(ciudad5);
+        region4.add(ciudad6);
+        // Supongamos que tienes un EspacioGeografico raíz
+        EspacioGeografico raizEspacio = raiz;
 
+        // Lo envuelves en un TreeItem
+        TreeItem<EspacioGeografico> rootItem = new TreeItem<>(raizEspacio);
+        rootItem.setExpanded(true);
+
+        // Asignar raíz al tree
+        treePaises.setRoot(rootItem);
+
+        // Manejar clicks en nodos
+        treePaises.setOnMouseClicked(event -> {
+            TreeItem<EspacioGeografico> selectedItem = treePaises.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                EspacioGeografico eg = selectedItem.getValue();
+                cur=eg;
+                if (eg instanceof Region) {
+                    if (selectedItem.getChildren().isEmpty()) {
+                        // Expandir: agregar los hijos al tree
+                        Region region = (Region) eg;
+                        for (EspacioGeografico hijo : region.getChildren()) {
+                            selectedItem.getChildren().add(new TreeItem<>(hijo));
+                        }
+                    } else {
+                        // Contraer: eliminar los hijos
+                        selectedItem.getChildren().clear();
+                    }
+                }
+                // Si es un país u otro tipo de EspacioGeografico, no pasa nada
+            }
+        });
+    }
     @FXML
     void select(ActionEvent event) {
         MenuItem item = (MenuItem) event.getSource();
         tipoSeleccionado = item.getText();
         split.setText(tipoSeleccionado);
     }
-
     @FXML
     void Click(ActionEvent event) {
         Object source = event.getSource();
@@ -66,7 +124,26 @@ public class Controladormenu {
             consultarPasaporte();
         } else if (source == btt5) { // Consultar todos
             consultarTodos();
+        } else if(source==btt6){
+            showTree();
+        }else if(source==btt7){
+            guardar();
         }
+    }
+    private void guardar() {
+        if (tipoSeleccionado.isEmpty()) {
+            mostrarAlerta("Error", "Debe seleccionar un tipo de pasaporte.");
+            return;
+        }
+        String codigo=txt1.getText();
+        String nombre=txt2.getText();
+        String mision=txt3.getText();
+        String tipo=tipoSeleccionado;
+        System.out.println(codigo);
+        System.out.println(nombre);
+        System.out.println(mision);
+        System.out.println(tipo);
+        System.out.println(cur);
     }
 
     private void crearPasaporte() {

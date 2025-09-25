@@ -24,10 +24,10 @@
       <TextField fx:id="txt1" layoutX="47.0" layoutY="90.0" promptText="Id" />
       <TextField fx:id="txt2" layoutX="287.0" layoutY="90.0" promptText="Nombres" />
       <SplitMenuButton fx:id="split" layoutX="47.0" layoutY="138.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Tipo de pasaporte" AnchorPane.leftAnchor="47.0">
-         <items>
-            <MenuItem fx:id="opt1" mnemonicParsing="false" onAction="#select" text="Diplomático" />
-            <MenuItem fx:id="opt2" mnemonicParsing="false" onAction="#select" text="Ordinario" />
-         </items>
+        <items>
+          <MenuItem fx:id="opt1" mnemonicParsing="false" onAction="#select" text="Diplomático" />
+          <MenuItem fx:id="opt2" mnemonicParsing="false" onAction="#select" text="Ordinario" />
+        </items>
       </SplitMenuButton>
       <Label layoutX="101.0" layoutY="25.0" prefHeight="34.0" prefWidth="286.0" text="Ingrese la siguiente información">
          <font>
@@ -36,6 +36,6 @@
       </Label>
       <TextField fx:id="txt3" layoutX="287.0" layoutY="138.0" promptText="Misión" />
       <TreeView fx:id="treePaises" layoutX="402.0" layoutY="282.0" prefHeight="25.0" prefWidth="134.0" />
-      <Button fx:id="btt6" layoutX="193.0" layoutY="337.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="134.0" text="Tree" />
+      <Button fx:id="btt6" layoutX="193.0" layoutY="337.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="134.0" text="Tree" />
    </children>
 </AnchorPane>

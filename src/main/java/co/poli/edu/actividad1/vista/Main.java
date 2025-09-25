@@ -37,7 +37,6 @@ public class Main  {
         region5.add(ciudad4);
         region4.add(ciudad5);
         region4.add(ciudad6);
-        System.out.println(ciudad7.getArbolJerarquico());
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
     static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}
