@@ -11,14 +11,15 @@ public class Main  {
     static CreatorPasaporteDiplomatico dpo=new CreatorPasaporteDiplomatico();
     private static PasaporteRepositorio repositorio = new PasaporteRepositorio();
     public static void main(String[] args) throws InterruptedException {
-        BuilderPasaporteOrdinario bld = new BuilderPasaporteOrdinario();
-        bld.setIdPasaporte("1235SOTO");
-        bld.setFechaPasaporte("14/05/2031");
-        bld.setRazonDeViaje("Soto lo pidio");
-        bld.setIdTitular(101);
-        bld.setIdPais(101);
-        bld.setElemento("1021");
-        System.out.println(insertar(bld.build()));
+        Region pais = new Region("Colombia");
+        Region region1 = new Region("Andina");
+        Ciudad bogota = new Ciudad("101", "Bogotá");
+        CiudadLeaf bogotaAdaptada = new AdaptadorCiudad(bogota);
+        region1.add(bogotaAdaptada);
+        pais.add(region1);
+        for (EspacioGeografico e : pais.getArbolJerarquico()) {
+            System.out.println(e.getNombre());
+        }
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
     static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}
@@ -34,3 +35,7 @@ public class Main  {
     static List<Pasaporte> seleccionarConCaracter(char ch){return repositorio.seleccionarConCaracter(ch);}
 
 }
+
+
+
+
