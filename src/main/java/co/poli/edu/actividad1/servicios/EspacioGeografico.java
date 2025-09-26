@@ -5,7 +5,6 @@ import java.util.*;
 public abstract class EspacioGeografico {
     protected EspacioGeografico padre;
     private String nombre;
-    //holaaa
     public String getNombre(){
         return nombre;
     }
