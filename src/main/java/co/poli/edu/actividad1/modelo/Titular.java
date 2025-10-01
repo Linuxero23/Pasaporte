@@ -25,6 +25,6 @@ public class Titular {
 
     @Override
     public String toString() {
-        return nombre + " (ID: " + id + ", Nacimiento: " + fechaNacimiento + ")";
+        return "Nombre: "+nombre + ", ID: " + id + ", Nacimiento: " + fechaNacimiento;
     }
 }

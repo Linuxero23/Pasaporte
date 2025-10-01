@@ -6,4 +6,5 @@ public interface Builder <Pasaporte>{
     Builder<Pasaporte> setFechaPasaporte(String fecha);
     Builder<Pasaporte> setIdTitular(int idTitular);
     Builder<Pasaporte>  setIdPais(int idPais);
+    Builder<Pasaporte> setElemento(String el);
 }

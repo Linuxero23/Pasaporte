@@ -12,31 +12,26 @@ public class Main  {
         init();
     }
     static void init(){
-        Region raiz=new Region("Colombia");
-        Region region1=new Region("Andina");
-        Region region2=new Region("Orinoquia");
-        Region region3=new Region("Cundinamarca");
-        Region region4=new Region("Tolima");
-        Region region5=new Region("Meta");
-        AdaptadorCiudad ciudad1=new AdaptadorCiudad(new Ciudad("1","Bogota"));
-        AdaptadorCiudad ciudad2=new AdaptadorCiudad(new Ciudad("2","Chia"));
-        AdaptadorCiudad ciudad3=new AdaptadorCiudad(new Ciudad("3","Acacias"));
-        AdaptadorCiudad ciudad4=new AdaptadorCiudad(new Ciudad("4","Villavicencio"));
-        AdaptadorCiudad ciudad5=new AdaptadorCiudad(new Ciudad("5","Ibague"));
-        AdaptadorCiudad ciudad6=new AdaptadorCiudad(new Ciudad("6","Mariquita"));
-        AdaptadorCiudad ciudad7=new AdaptadorCiudad(new Ciudad("7","Cartagena"));
-        raiz.add(region1);
-        raiz.add(region2);
-        raiz.add(ciudad7);
-        region1.add(region3);
-        region1.add(region4);
-        region2.add(region5);
-        region3.add(ciudad1);
-        region3.add(ciudad2);
-        region5.add(ciudad3);
-        region5.add(ciudad4);
-        region4.add(ciudad5);
-        region4.add(ciudad6);
+        /*BuilderPasaporteOrdinario b=new BuilderPasaporteOrdinario();
+        b.setIdPasaporte("JUANCHOPOPO");
+        b.setFechaPasaporte("05/20/2026");
+        b.setIdPais(101);
+        b.setIdTitular(101);
+        b.setElemento("1");
+        b.setRazonDeViaje("probando 1 2 3");
+        eliminar(b.build().getId());*/
+        InterfazTitular t=new AdaptadorTitular(new Titular("101","Edwar Soto","23/05/1979"));
+        System.out.println(t.getDescripcion());
+        t=new DecoradorClase(t,"Clase pobre");
+        System.out.println(t.getDescripcion());
+        t=new DecoradorMascota(t,"Perro Salvavidas");
+        System.out.println(t.getDescripcion());
+        t=new DecoradorClase(t,"Clase mega pobre");
+        System.out.println(t.getDescripcion());
+        t=new DecoradorMascota(t,"Perro Guardian");
+        System.out.println(t.getDescripcion());
+        t=new DecoradorClase(t,"Clase pobre");
+        System.out.println(t.getDescripcion());
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
     static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}
