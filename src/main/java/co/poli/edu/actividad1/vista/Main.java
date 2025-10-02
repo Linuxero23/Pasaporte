@@ -24,13 +24,9 @@ public class Main  {
         System.out.println(t.getDescripcion());
         t=new DecoradorClase(t,"Clase pobre");
         System.out.println(t.getDescripcion());
-        t=new DecoradorMascota(t,"Perro Salvavidas");
+        t=new DecoradorViajes(t,"España-Brasil");
         System.out.println(t.getDescripcion());
-        t=new DecoradorClase(t,"Clase mega pobre");
-        System.out.println(t.getDescripcion());
-        t=new DecoradorMascota(t,"Perro Guardian");
-        System.out.println(t.getDescripcion());
-        t=new DecoradorClase(t,"Clase pobre");
+        t=new DecoradorViajes(t,"Brasil-Argentina");
         System.out.println(t.getDescripcion());
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
