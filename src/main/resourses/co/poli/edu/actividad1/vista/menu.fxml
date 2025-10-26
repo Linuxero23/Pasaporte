@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="487.0" prefWidth="644.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.poli.edu.actividad1.controlador.Controladormenu">
+   <children>
+      <Button fx:id="btt4" layoutX="46.0" layoutY="295.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="134.0" text="Consultar pasaporte" />
+      <Button fx:id="btt1" layoutX="46.0" layoutY="252.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="134.0" text="Crear pasaporte" />
+      <Button fx:id="btt3" layoutX="196.0" layoutY="252.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="126.0" text="Eliminar pasaporte" />
+      <Button fx:id="btt2" layoutX="193.0" layoutY="295.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="134.0" text="Actualizar pasaporte" />
+      <Button fx:id="btt5" layoutX="46.0" layoutY="337.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="134.0" text="Consultar todos" />
+      <Label layoutX="119.0" layoutY="195.0" prefHeight="34.0" prefWidth="244.0" text="¿Qué acción desea realizar?">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txt1" layoutX="47.0" layoutY="90.0" promptText="Id" />
+      <TextField fx:id="txt2" layoutX="287.0" layoutY="90.0" promptText="Nombres" />
+      <SplitMenuButton fx:id="split" layoutX="47.0" layoutY="138.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Tipo de pasaporte" AnchorPane.leftAnchor="47.0">
+         <items>
+            <MenuItem fx:id="opt1" mnemonicParsing="false" onAction="#select" text="Diplomático" />
+            <MenuItem fx:id="opt2" mnemonicParsing="false" onAction="#select" text="Ordinario" />
+         </items>
+      </SplitMenuButton>
+      <Label layoutX="101.0" layoutY="25.0" prefHeight="34.0" prefWidth="286.0" text="Ingrese la siguiente información">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txt3" layoutX="287.0" layoutY="138.0" promptText="Misión" />
+      <TreeView fx:id="treePaises" layoutX="387.0" layoutY="212.0" prefHeight="240.0" prefWidth="222.0" />
+      <Button fx:id="btt6" layoutX="193.0" layoutY="337.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="134.0" text="Tree" />
+      <Button fx:id="btt7" layoutX="153.0" layoutY="392.0" mnemonicParsing="false" onAction="#Click" text="GuardarInfo" />
+   </children>
+</AnchorPane>
