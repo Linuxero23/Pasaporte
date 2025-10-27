@@ -34,8 +34,17 @@ public class Main  {
         System.out.println(fachada.procesarSolicitud("12345"));
 
         */
-
-
+        PasaporteOrdinario pasaporte = new PasaporteOrdinario();
+        pasaporte.setId("P123");
+        pasaporte.setTitular(101);
+        pasaporte.setPais(57);
+        pasaporte.setFechaEx("26/10/2025");
+        pasaporte.setElemento("Chip123");
+        FactoryPasaporteFlyweight factory=new FactoryPasaporteFlyweight();
+        factory.set("Colombia","Vinotinto","Español");
+        factory.set("Argentina","Azul","Español");
+        PasaporteFlyweigth pf=factory.getFlyweight(pasaporte.getPaisNombre());
+        pf.getDetails(pasaporte);
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
     static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}

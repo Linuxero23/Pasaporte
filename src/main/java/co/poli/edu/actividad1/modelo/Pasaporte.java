@@ -22,6 +22,11 @@ public abstract class Pasaporte {
     public String getFechaEx() { return fechaEx; }
     public int getPais() { return pais; }
     public void setId(String id){this.id=id;}
+    public String getPaisNombre(){
+        if(pais==57)
+            return "Colombia";
+        return "Argentina";
+    }
     public void setTitular(int id_titular){this.id_titular=id_titular;}
     public void setFechaEx(String fechaEx){this.fechaEx=fechaEx;}
     public void setPais(int pais){this.pais=pais;}
