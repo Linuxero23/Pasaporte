@@ -9,7 +9,7 @@ public class FachadaPasaporte {
     public FachadaPasaporte() {
         this.verificacionId = new VerificacionId();
         this.verificacionAnt = new VerificacionAnt();
-        this.generacionPasaporte = new GeneracionPasaporte(verificacionId);
+        this.generacionPasaporte = new GeneracionPasaporte();
     }
 
     public String procesarSolicitud(String id) {
