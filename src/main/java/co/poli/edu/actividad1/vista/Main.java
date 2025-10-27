@@ -19,13 +19,12 @@ public class Main  {
         pasaporte.setPais(57);
         pasaporte.setFechaEx("26/10/2025");
         pasaporte.setElemento("Chip123");
-
         // usuario autorizado
-        ProxyPasaporte proxyAdmin = new ProxyPasaporte(pasaporte, "ADMIN");
+        ProxyPasaporte proxyAdmin = new ProxyPasaporte(new AdaptadorPasaporte(pasaporte), "ADMIN");
         System.out.println(proxyAdmin.getDescripcion());
 
         // usuario NO autorizado
-        ProxyPasaporte proxyInvitado = new ProxyPasaporte(pasaporte, "INVITADO");
+        ProxyPasaporte proxyInvitado = new ProxyPasaporte(new AdaptadorPasaporte(pasaporte), "INVITADO");
         System.out.println(proxyInvitado.getDescripcion());
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}

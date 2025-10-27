@@ -7,11 +7,10 @@ public class ProxyPasaporte implements InterfacePasaporte {
     private AdaptadorPasaporte adaptadorPasaporte;
     private boolean accesoPermitido = false;
 
-    public ProxyPasaporte(Pasaporte pasaporte, String rolUsuario) {
-        if ("ADMIN".equalsIgnoreCase(rolUsuario) || "FUNCIONARIO".equalsIgnoreCase(rolUsuario)) {
-            accesoPermitido = true;
-            this.adaptadorPasaporte = new AdaptadorPasaporte(pasaporte);
-        }
+    public ProxyPasaporte(AdaptadorPasaporte pasaporte, String rolUsuario) {
+        adaptadorPasaporte = pasaporte;
+        accesoPermitido = "ADMIN".equalsIgnoreCase(rolUsuario) || "FUNCIONARIO".equalsIgnoreCase(rolUsuario);
+
     }
 
     @Override
@@ -21,7 +20,6 @@ public class ProxyPasaporte implements InterfacePasaporte {
         }
         return adaptadorPasaporte.getDescripcion();
     }
-
     public void registrarAcceso(String usuario) {
         System.out.println("Registro de acceso al pasaporte por: " + usuario);
     }
