@@ -6,8 +6,8 @@ public class FactoryPasaporteFlyweight {
     public FactoryPasaporteFlyweight() {
         cache=new HashMap<>();
     }
-    public void set(PasaporteFlyweigth pf){
-        cache.put(pf.getPais(),new PasaporteFlyweigth(pf.getColor(),pf.getIdioma()));
+    public void set(String pais,String color, String idioma){
+        cache.put(pais,new PasaporteFlyweigth(color,idioma));
     }
     public PasaporteFlyweigth getFlyweight(String pais){
         return cache.get(pais);

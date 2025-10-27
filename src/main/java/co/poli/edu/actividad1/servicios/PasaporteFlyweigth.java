@@ -12,7 +12,7 @@ public class PasaporteFlyweigth {
     }
     public void getDetails(Pasaporte p){
         System.out.println(p+"\n Estilo = ["+color+", "+idioma+"]");
-    }
+    }   
 
     public String getColor() {
         return color;
