@@ -26,6 +26,13 @@ public class Main  {
         // usuario NO autorizado
         ProxyPasaporte proxyInvitado = new ProxyPasaporte(new AdaptadorPasaporte(pasaporte), "INVITADO");
         System.out.println(proxyInvitado.getDescripcion());
+
+        FachadaPasaporte fachada = new FachadaPasaporte();
+        System.out.println();
+        System.out.println(fachada.procesarSolicitud("67890"));
+        System.out.println();
+        System.out.println(fachada.procesarSolicitud("12345"));
+
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
     static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}
