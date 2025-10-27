@@ -9,7 +9,7 @@ public class FachadaPasaporte {
     public FachadaPasaporte() {
         this.verificacionId = new VerificacionId();
         this.verificacionAnt = new VerificacionAnt();
-        this.generacionPasaporte = new GeneracionPasaporte(verificacionId, verificacionAnt);
+        this.generacionPasaporte = new GeneracionPasaporte(verificacionId);
     }
 
     public String procesarSolicitud(String id) {
@@ -24,9 +24,7 @@ public class FachadaPasaporte {
         }
         System.out.println("Verificación de Antecedentes existosa: Sin antecendentes");
 
-        if (!generacionPasaporte.generarPasaporte(id)) {
-            return "No se pude";
-        }
+        generacionPasaporte.generarPasaporte(id);
 
         return ("Pasaporte generado exitosamente");
     }
