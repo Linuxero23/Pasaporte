@@ -24,10 +24,9 @@ public class Main  {
         System.out.println(proxyAdmin.getDescripcion());
 
         // usuario NO autorizado
-        ProxyPasaporte proxyInvitado = new ProxyPasaporte(new AdaptadorPasaporte(pasaporte), "INVITADO");
-        System.out.println(proxyInvitado.getDescripcion());
+-        System.out.println(proxyInvitado.getDescripcion());
 
-        FachadaPasaporte fachada = new FachadaPasaporte();
+        FachadaPasaport e fachada = new FachadaPasaporte();
         System.out.println();
         System.out.println(fachada.procesarSolicitud("67890"));
         System.out.println();
@@ -35,16 +34,13 @@ public class Main  {
 
         */
         PasaporteOrdinario pasaporte = new PasaporteOrdinario();
-        pasaporte.setId("P123");
+        pasaporte.setId("LULU111000");
         pasaporte.setTitular(101);
-        pasaporte.setPais(57);
+        pasaporte.setPais(101);
         pasaporte.setFechaEx("26/10/2025");
         pasaporte.setElemento("Chip123");
-        FactoryPasaporteFlyweight factory=new FactoryPasaporteFlyweight();
-        factory.set("Colombia","Vinotinto","Español");
-        factory.set("Argentina","Azul","Español");
-        PasaporteFlyweigth pf=factory.getFlyweight(pasaporte.getPaisNombre());
-        pf.getDetails(pasaporte);
+        pasaporte.setRazonDeViaje("Sisisi sotico lindo");
+        insertar(pasaporte);
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
     static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}
@@ -54,6 +50,10 @@ public class Main  {
     static List<Pasaporte> seleccionarConCaracter(char ch){return repositorio.seleccionarConCaracter(ch);}
 
 }
+
+
+
+
 
 
 

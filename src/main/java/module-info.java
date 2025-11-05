@@ -3,6 +3,7 @@ module pasaporte {
     requires javafx.fxml;
     requires javafx.base;
     requires java.sql;
+    requires org.postgresql.jdbc;
 
 
     opens co.poli.edu.actividad1.controlador to javafx.fxml;

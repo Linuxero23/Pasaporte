@@ -17,15 +17,26 @@ public class ConexionBD {
     private static final String USER = props.getProperty("DB_USER");
     private static final String PASSWORD = props.getProperty("DB_PASSWORD");
     private static Connection connection;
+    private static ConexionBD instance;
 
+    private ConexionBD() {
+        try {
+            Class.forName("org.postgresql.Driver"); // carga driver una sola vez
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("No se encontró el driver PostgreSQL", e);
+        }
+    }
+    public static synchronized ConexionBD getInstance() {
+        if (instance == null) {
+            instance = new ConexionBD();
+        }
+        return instance;
+    }
 
-    private ConexionBD() {}
-
-
-    public static Connection getConnection() throws SQLException {
-        System.out.println(USER);
-        System.out.println(PASSWORD );
-        connection = DriverManager.getConnection(URL, USER, PASSWORD);
+    public Connection getConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
+            connection = DriverManager.getConnection(URL, USER,PASSWORD);
+        }
         return connection;
     }
 }

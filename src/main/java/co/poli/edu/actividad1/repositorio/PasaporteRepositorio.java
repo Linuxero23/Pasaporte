@@ -8,14 +8,13 @@ import java.util.*;
 public class PasaporteRepositorio implements Metodos<Pasaporte> {
     CreatorPasaporteOrdinario cpo=new CreatorPasaporteOrdinario();
     CreatorPasaporteDiplomatico cpd=new CreatorPasaporteDiplomatico();
-    boolean flag=true;
     @Override
     public String insertar(Pasaporte pasaporte) {
         String sqlPasaporte = "INSERT INTO pasaporte (codigo_pasaporte,id_titular, id_pais, fecha_de_expiracion,elemento_de_seguridad) VALUES (?,?, ?, ?,?)";
         String sqlOrdinario = "INSERT INTO pasaporte_ordinario (id_pasaporte, motivo_de_viaje) VALUES (?, ?)";
         String sqlDiplomatico = "INSERT INTO pasaporte_diplomatico (id_pasaporte, mision) VALUES (?, ?)";
 
-        try (Connection conn = ConexionBD.getConnection()) {
+        try (Connection conn = ConexionBD.getInstance().getConnection()) {
             conn.setAutoCommit(false);
 
             long idPasaporteGenerado = -1;
@@ -57,13 +56,13 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
                 }
             }
             conn.commit();
+            try (Statement cleanup = conn.createStatement()) {
+                cleanup.execute("DEALLOCATE ALL");
+            }
+
             return "✅ Pasaporte guardado correctamente con ID: " + idPasaporteGenerado;
 
         } catch (Exception e) {
-            if(flag){
-                flag=false;
-                return insertar(pasaporte);
-            }
             e.printStackTrace();
             return "❌ Error al guardar pasaporte: " + e.getMessage();
         }
@@ -75,7 +74,7 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
         String sqlUpdatePasaporte = "UPDATE pasaporte SET id_titular = ?, id_pais = ?, fecha_de_expiracion = ? WHERE id_pasaporte = ?";
         String sqlUpdateOrdinario = "UPDATE pasaporte_ordinario SET motivo_de_viaje = ? WHERE id_pasaporte = ?";
         String sqlUpdateDiplomatico = "UPDATE pasaporte_diplomatico SET mision = ? WHERE id_pasaporte = ?";
-        try (Connection conn = ConexionBD.getConnection()) {
+        try (Connection conn = ConexionBD.getInstance().getConnection()) {
             conn.setAutoCommit(false);
 
             long idPasaporte = -1;
@@ -112,14 +111,12 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
                     stmt.setLong(2, idPasaporte);
                     stmt.executeUpdate();
                 }
+            }conn.commit();
+            try (Statement cleanup = conn.createStatement()) {
+                cleanup.execute("DEALLOCATE ALL");
             }
-            conn.commit();
             return "✅ Pasaporte actualizado correctamente (ID: " + idPasaporte + ")";
         } catch (Exception e) {
-            if(flag){
-                flag=false;
-                return actualizar(codigoPasaporte,pasaporte);
-            }
             e.printStackTrace();
             return "❌ Error al actualizar pasaporte: " + e.getMessage();
         }
@@ -133,7 +130,7 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
         String sqlDeleteDiplomatico = "DELETE FROM pasaporte_diplomatico WHERE id_pasaporte = ?";
         String sqlDeletePasaporte = "DELETE FROM pasaporte WHERE id_pasaporte = ?";
 
-        try (Connection conn = ConexionBD.getConnection()) {
+        try (Connection conn = ConexionBD.getInstance().getConnection()) {
             conn.setAutoCommit(false);
 
             long idPasaporte = -1;
@@ -160,15 +157,13 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
                 stmt.setLong(1, idPasaporte);
                 stmt.executeUpdate();
             }
-
             conn.commit();
+            try (Statement cleanup = conn.createStatement()) {
+                cleanup.execute("DEALLOCATE ALL");
+            }
             return "✅ Pasaporte eliminado correctamente (ID: " + idPasaporte + ")";
 
         } catch (Exception e) {
-            if(flag){
-                flag=false;
-                return eliminar(codigoPasaporte);
-            }
             e.printStackTrace();
             return "❌ Error al eliminar pasaporte: " + e.getMessage();
         }
@@ -181,7 +176,7 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
         String sqlSelectOrdinario = "SELECT motivo_de_viaje FROM pasaporte_ordinario WHERE id_pasaporte = ?";
         String sqlSelectDiplomatico = "SELECT mision FROM pasaporte_diplomatico WHERE id_pasaporte = ?";
 
-        try (Connection conn = ConexionBD.getConnection()) {
+        try (Connection conn = ConexionBD.getInstance().getConnection()) {
             long idPasaporte = -1;
             String codigo = null;
             int idTitular = -1;
@@ -237,10 +232,6 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
                 }
             }
         } catch (Exception e) {
-            if(flag){
-                flag=false;
-                return seleccionar(codigoPasaporte);
-            }
             e.printStackTrace();
             return null;
         }
@@ -255,7 +246,7 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
         String sqlOrdinario = "SELECT motivo_de_viaje FROM pasaporte_ordinario WHERE id_pasaporte = ?";
         String sqlDiplomatico = "SELECT mision FROM pasaporte_diplomatico WHERE id_pasaporte = ?";
 
-        try (Connection conn = ConexionBD.getConnection();
+        try (Connection conn = ConexionBD.getInstance().getConnection();
              PreparedStatement stmtPasaporte = conn.prepareStatement(sqlPasaporte);
              ResultSet rs = stmtPasaporte.executeQuery()) {
 
@@ -302,10 +293,6 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
             }
 
         } catch (SQLException e) {
-            if(flag){
-                flag=false;
-                return seleccionarTodos();
-            }
             e.printStackTrace();
         }
 
@@ -321,7 +308,7 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
         String sqlOrdinario = "SELECT motivo_de_viaje FROM pasaporte_ordinario WHERE id_pasaporte = ?";
         String sqlDiplomatico = "SELECT mision FROM pasaporte_diplomatico WHERE id_pasaporte = ?";
 
-        try (Connection conn = ConexionBD.getConnection();
+        try (Connection conn = ConexionBD.getInstance().getConnection();
              PreparedStatement stmtPasaporte = conn.prepareStatement(sqlPasaporte)) {
 
             stmtPasaporte.setString(1, "%" + ch + "%");
@@ -372,10 +359,6 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
             }
 
         } catch (SQLException e) {
-            if(flag){
-                flag=false;
-                return seleccionarConCaracter(ch);
-            }
             e.printStackTrace();
         }
 
