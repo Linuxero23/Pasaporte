@@ -3,12 +3,15 @@ package co.poli.edu.actividad1.controlador;
 import co.poli.edu.actividad1.modelo.*;
 import co.poli.edu.actividad1.repositorio.PasaporteRepositorio;
 import co.poli.edu.actividad1.servicios.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 public class Controladormenu {
 
+    public Button btt8;
     @FXML
     private Button btt1; //Crear
 
@@ -26,6 +29,7 @@ public class Controladormenu {
 
     @FXML
     private Button btt6;
+
     @FXML
     private Button btt7;
 
@@ -41,6 +45,10 @@ public class Controladormenu {
     @FXML
     private TreeView<EspacioGeografico> treePaises;
 
+    ObservableList<Memento> mementos = FXCollections.observableArrayList();
+    // ListView que usa la lista observable
+    @FXML
+    ListView<Memento> flist;
     @FXML
     private TextField txt3; // Misión o motivo de viaje
 
@@ -77,10 +85,9 @@ public class Controladormenu {
         region4.add(ciudad5);
         region4.add(ciudad6);
         // Supongamos que tienes un EspacioGeografico raíz
-        EspacioGeografico raizEspacio = raiz;
 
         // Lo envuelves en un TreeItem
-        TreeItem<EspacioGeografico> rootItem = new TreeItem<>(raizEspacio);
+        TreeItem<EspacioGeografico> rootItem = new TreeItem<>(raiz);
         rootItem.setExpanded(true);
 
         // Asignar raíz al tree
@@ -115,11 +122,10 @@ public class Controladormenu {
         tipoSeleccionado = item.getText();
         split.setText(tipoSeleccionado);
     }
-
+    boolean ini=true;
     @FXML
     void Click(ActionEvent event) {
         Object source = event.getSource();
-
         if (source == btt1) { // Crear
             crearPasaporte();
         } else if (source == btt2) { // Actualizar
@@ -133,26 +139,82 @@ public class Controladormenu {
         } else if (source == btt6) { //Show tree
             showTree();
         } else if (source == btt7) { //Memento
+            if(ini) {
+                init();
+                ini=false;
+            }
             guardar();
+        }else if (source == btt8) {
+            restaurar();
         }
     }
-
+    CareTaker CT;
+    AdaptadorPasaporte aapp=new AdaptadorPasaporte(null);
     String codigo, nombre, mision, tipo;
+    private void init(){
+        mementos = FXCollections.observableArrayList();
+        flist.setItems(mementos);
+        flist.setCellFactory(lv  -> new ListCell<>() {
+            @Override
+            protected void updateItem(Memento item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    // Mostrar el índice 1-indexado
+                    int index = getIndex() + 1;
+                    setText("Estado #" + index);
+                }
+            }
+        });
+    }
+    private void restaurar(){
+        int indice = flist.getSelectionModel().getSelectedIndex();
+        if(indice==-1){
+            mostrarAlerta("Error","No seleccionaste ningun elemento para restauras");
+            return;
+        }
+        Pasaporte p=aapp.restore(CT.undo(indice));
+        txt1.setText(p.getId());
+        txt2.setText(p.getTitular());
+    }
 
     private void guardar() {
+        boolean flag=false;
+        if(CT==null) {
+            CT = new CareTaker();
+            flag=true;
+        }
         if (tipoSeleccionado.isEmpty()) {
             mostrarAlerta("Error", "Debe seleccionar un tipo de pasaporte.");
             return;
         }
-        codigo = txt1.getText();
-        nombre = txt2.getText();
-        mision = txt3.getText();
-        tipo = tipoSeleccionado;
-        System.out.println(codigo);
-        System.out.println(nombre);
-        System.out.println(mision);
-        System.out.println(tipo);
-        System.out.println(cur);
+        Pasaporte pasaporte;
+        if (tipoSeleccionado.equals("Ordinario")) {
+            PasaporteOrdinario po = new PasaporteOrdinario();
+            po.setId(txt1.getText());
+            po.setTitular(txt2.getText());
+            po.setFechaEx("14/09/2025");
+            po.setPais(cur.toString());
+            po.setRazonDeViaje(txt3.getText());
+            pasaporte = po;
+        } else {
+            PasaporteDiplomatico pd = new PasaporteDiplomatico();
+            pd.setId(txt1.getText());
+            pd.setTitular(txt2.getText());
+            pd.setFechaEx("14/09/2025");
+            pd.setPais(cur.toString());
+            pd.setMision(txt3.getText());
+            pasaporte = pd;
+        }
+        AdaptadorPasaporte ap=new AdaptadorPasaporte(pasaporte);
+        CT.add(ap.save());
+        mementos.clear();
+        mementos.addAll(CT.getHistory());
+        if(flag)
+            crearPasaporte();
+        else
+            actualizarPasaporte();
     }
 
     private void crearPasaporte() {

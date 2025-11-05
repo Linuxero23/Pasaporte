@@ -40,7 +40,9 @@ public class Main  {
         pasaporte.setFechaEx("26/10/2025");
         pasaporte.setElemento("Chip123");
         pasaporte.setRazonDeViaje("Sisisi sotico lindo");
-        insertar(pasaporte);
+        AdaptadorPasaporte ap= new AdaptadorPasaporte(pasaporte);
+        System.out.println(ap.restore(ap.save()));
+
     }
     static String insertar(Pasaporte pasaporte) {return repositorio.insertar(pasaporte);}
     static String actualizar(String codigo,Pasaporte pasaporte) {return repositorio.actualizar(codigo,pasaporte);}
