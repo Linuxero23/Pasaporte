@@ -19,13 +19,13 @@ public class BuilderPasaporteOrdinario implements Builder<Pasaporte>{
     }
 
     @Override
-    public Builder<Pasaporte> setIdTitular(int idTitular) {
+    public Builder<Pasaporte> setIdTitular(String idTitular) {
         this.p.setTitular(idTitular);
         return this;
     }
 
     @Override
-    public Builder<Pasaporte> setIdPais(int idPais) {
+    public Builder<Pasaporte> setIdPais(String idPais) {
         this.p.setPais(idPais);
         return this;
     }

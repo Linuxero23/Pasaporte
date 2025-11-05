@@ -21,8 +21,8 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
 
             try (PreparedStatement stmt = conn.prepareStatement(sqlPasaporte, Statement.RETURN_GENERATED_KEYS)) {
                 stmt.setString(1, pasaporte.getId());
-                stmt.setInt(2, pasaporte.getTitular()); // FK al titular
-                stmt.setInt(3, pasaporte.getPais());    // FK al país
+                stmt.setString(2, pasaporte.getTitular()); // FK al titular
+                stmt.setString(3, pasaporte.getPais());    // FK al país
                 stmt.setString(4, pasaporte.getFechaEx());
                 stmt.setString(5, pasaporte.getIdElemento());
                 stmt.executeUpdate()        ;
@@ -91,8 +91,8 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
                 return "❌ No se encontró pasaporte con código: " + codigoPasaporte;
             }
             try (PreparedStatement stmt = conn.prepareStatement(sqlUpdatePasaporte)) {
-                stmt.setInt(1, pasaporte.getTitular());
-                stmt.setInt(2, pasaporte.getPais());
+                stmt.setString(1, pasaporte.getTitular());
+                stmt.setString(2, pasaporte.getPais());
                 stmt.setString(3, pasaporte.getFechaEx());
                 stmt.setLong(4, idPasaporte);
                 stmt.executeUpdate();
@@ -179,8 +179,8 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
         try (Connection conn = ConexionBD.getInstance().getConnection()) {
             long idPasaporte = -1;
             String codigo = null;
-            int idTitular = -1;
-            int idPais = -1;
+            String idTitular = null;
+            String idPais = null;
             String fechaExp = null;
 
             // 1️⃣ Buscar pasaporte en tabla principal
@@ -190,8 +190,8 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
                     if (rs.next()) {
                         idPasaporte = rs.getLong("id_pasaporte");
                         codigo = rs.getString("codigo_pasaporte");
-                        idTitular = rs.getInt("id_titular");
-                        idPais = rs.getInt("id_pais");
+                        idTitular = rs.getString("id_titular");
+                        idPais = rs.getString("id_pais");
                         fechaExp = rs.getString("fecha_de_expiracion");
                     }
                 }
@@ -253,8 +253,8 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
             while (rs.next()) {
                 long idPasaporte = rs.getLong("id_pasaporte");
                 String codigo = rs.getString("codigo_pasaporte");
-                int idTitular = rs.getInt("id_titular");
-                int idPais = rs.getInt("id_pais");
+                String idTitular = rs.getString("id_titular");
+                String idPais = rs.getString("id_pais");
                 String fechaExp = rs.getString("fecha_de_expiracion");
                 int f=-1;
                 try (PreparedStatement stmtOrd = conn.prepareStatement(sqlOrdinario)) {
@@ -317,8 +317,8 @@ public class PasaporteRepositorio implements Metodos<Pasaporte> {
                 while (rs.next()) {
                     long idPasaporte = rs.getLong("id_pasaporte");
                     String codigo = rs.getString("codigo_pasaporte");
-                    int idTitular = rs.getInt("id_titular");
-                    int idPais = rs.getInt("id_pais");
+                    String idTitular = rs.getString("id_titular");
+                    String idPais = rs.getString("id_pais");
                     String fechaExp = rs.getString("fecha_de_expiracion");
 
                     int f=-1;

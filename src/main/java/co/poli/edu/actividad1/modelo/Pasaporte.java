@@ -1,9 +1,9 @@
 package co.poli.edu.actividad1.modelo;
 public abstract class Pasaporte {
     protected String id;
-    protected int id_titular;
+    protected String id_titular;
     protected String fechaEx;
-    protected int pais;
+    protected String pais;
     private String idElemento;
 
     public void setElemento(String id) {
@@ -15,20 +15,15 @@ public abstract class Pasaporte {
     public String toString(){
         return "["+id+","+id_titular+","+pais+","+fechaEx+"]";
     }
-    public int getTitular(){
+    public String getTitular(){
         return id_titular;
     }
     public String getId() { return id; }
     public String getFechaEx() { return fechaEx; }
-    public int getPais() { return pais; }
+    public String getPais() { return pais; }
     public void setId(String id){this.id=id;}
-    public String getPaisNombre(){
-        if(pais==57)
-            return "Colombia";
-        return "Argentina";
-    }
-    public void setTitular(int id_titular){this.id_titular=id_titular;}
+    public void setTitular(String id_titular){this.id_titular=id_titular;}
     public void setFechaEx(String fechaEx){this.fechaEx=fechaEx;}
-    public void setPais(int pais){this.pais=pais;}
+    public void setPais(String pais){this.pais=pais;}
 }
 

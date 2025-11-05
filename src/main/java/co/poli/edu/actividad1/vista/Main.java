@@ -34,9 +34,9 @@ public class Main  {
 
         */
         PasaporteOrdinario pasaporte = new PasaporteOrdinario();
-        pasaporte.setId("LULU111000");
-        pasaporte.setTitular(101);
-        pasaporte.setPais(101);
+        pasaporte.setId("POPOPO123");
+        pasaporte.setTitular("101");
+        pasaporte.setPais("101");
         pasaporte.setFechaEx("26/10/2025");
         pasaporte.setElemento("Chip123");
         pasaporte.setRazonDeViaje("Sisisi sotico lindo");

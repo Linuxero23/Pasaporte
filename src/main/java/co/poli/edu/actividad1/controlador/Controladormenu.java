@@ -43,23 +43,27 @@ public class Controladormenu {
 
     @FXML
     private TextField txt3; // Misión o motivo de viaje
+
     private EspacioGeografico cur;
+
     private final PasaporteRepositorio repo = new PasaporteRepositorio();
+
     private String tipoSeleccionado = "";
+
     public void showTree() {
-        Region raiz=new Region("Colombia");
-        Region region1=new Region("Andina");
-        Region region2=new Region("Orinoquia");
-        Region region3=new Region("Cundinamarca");
-        Region region4=new Region("Tolima");
-        Region region5=new Region("Meta");
-        AdaptadorCiudad ciudad1=new AdaptadorCiudad(new Ciudad("1","Bogota"));
-        AdaptadorCiudad ciudad2=new AdaptadorCiudad(new Ciudad("2","Chia"));
-        AdaptadorCiudad ciudad3=new AdaptadorCiudad(new Ciudad("3","Acacias"));
-        AdaptadorCiudad ciudad4=new AdaptadorCiudad(new Ciudad("4","Villavicencio"));
-        AdaptadorCiudad ciudad5=new AdaptadorCiudad(new Ciudad("5","Ibague"));
-        AdaptadorCiudad ciudad6=new AdaptadorCiudad(new Ciudad("6","Mariquita"));
-        AdaptadorCiudad ciudad7=new AdaptadorCiudad(new Ciudad("7","Cartagena"));
+        Region raiz = new Region("Colombia");
+        Region region1 = new Region("Andina");
+        Region region2 = new Region("Orinoquia");
+        Region region3 = new Region("Cundinamarca");
+        Region region4 = new Region("Tolima");
+        Region region5 = new Region("Meta");
+        AdaptadorCiudad ciudad1 = new AdaptadorCiudad(new Ciudad("1", "Bogota"));
+        AdaptadorCiudad ciudad2 = new AdaptadorCiudad(new Ciudad("2", "Chia"));
+        AdaptadorCiudad ciudad3 = new AdaptadorCiudad(new Ciudad("3", "Acacias"));
+        AdaptadorCiudad ciudad4 = new AdaptadorCiudad(new Ciudad("4", "Villavicencio"));
+        AdaptadorCiudad ciudad5 = new AdaptadorCiudad(new Ciudad("5", "Ibague"));
+        AdaptadorCiudad ciudad6 = new AdaptadorCiudad(new Ciudad("6", "Mariquita"));
+        AdaptadorCiudad ciudad7 = new AdaptadorCiudad(new Ciudad("7", "Cartagena"));
         raiz.add(region1);
         raiz.add(region2);
         raiz.add(ciudad7);
@@ -87,7 +91,7 @@ public class Controladormenu {
             TreeItem<EspacioGeografico> selectedItem = treePaises.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
                 EspacioGeografico eg = selectedItem.getValue();
-                cur=eg;
+                cur = eg;
                 if (eg instanceof Region) {
                     if (selectedItem.getChildren().isEmpty()) {
                         // Expandir: agregar los hijos al tree
@@ -104,12 +108,14 @@ public class Controladormenu {
             }
         });
     }
+
     @FXML
     void select(ActionEvent event) {
         MenuItem item = (MenuItem) event.getSource();
         tipoSeleccionado = item.getText();
         split.setText(tipoSeleccionado);
     }
+
     @FXML
     void Click(ActionEvent event) {
         Object source = event.getSource();
@@ -124,21 +130,24 @@ public class Controladormenu {
             consultarPasaporte();
         } else if (source == btt5) { // Consultar todos
             consultarTodos();
-        } else if(source==btt6){
+        } else if (source == btt6) { //Show tree
             showTree();
-        }else if(source==btt7){
+        } else if (source == btt7) { //Memento
             guardar();
         }
     }
+
+    String codigo, nombre, mision, tipo;
+
     private void guardar() {
         if (tipoSeleccionado.isEmpty()) {
             mostrarAlerta("Error", "Debe seleccionar un tipo de pasaporte.");
             return;
         }
-        String codigo=txt1.getText();
-        String nombre=txt2.getText();
-        String mision=txt3.getText();
-        String tipo=tipoSeleccionado;
+        codigo = txt1.getText();
+        nombre = txt2.getText();
+        mision = txt3.getText();
+        tipo = tipoSeleccionado;
         System.out.println(codigo);
         System.out.println(nombre);
         System.out.println(mision);
@@ -158,17 +167,17 @@ public class Controladormenu {
 
             PasaporteOrdinario po = new PasaporteOrdinario();
             po.setId(txt1.getText());
-            po.setTitular(102);
+            po.setTitular(nombre);
             po.setFechaEx("14/09/2025");
-            po.setPais(101);
+            po.setPais(cur.toString());
             po.setRazonDeViaje(txt3.getText());
             pasaporte = po;
         } else {
             PasaporteDiplomatico pd = new PasaporteDiplomatico();
             pd.setId(txt1.getText());
-            pd.setTitular(102);
+            pd.setTitular(nombre);
             pd.setFechaEx("14/09/2025");
-            pd.setPais(101);
+            pd.setPais(cur.toString());
             pd.setMision(txt3.getText());
             pasaporte = pd;
         }
@@ -192,8 +201,8 @@ public class Controladormenu {
             ((PasaporteDiplomatico) pas).setMision(txt3.getText());
         }
 
-        pas.setTitular(Integer.parseInt(txt2.getText()));
-        pas.setPais(101);
+        pas.setTitular((txt2.getText()));
+        pas.setPais(cur.toString());
         pas.setFechaEx("14/09/2025");
 
         String resultado = repo.actualizar(id, pas);
