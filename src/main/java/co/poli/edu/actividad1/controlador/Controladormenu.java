@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 
 public class Controladormenu {
 
-    public Button btt8;
     @FXML
     private Button btt1; //Crear
 
@@ -34,6 +33,12 @@ public class Controladormenu {
     private Button btt7;
 
     @FXML
+    public Button btt8;
+
+    @FXML
+    public Button btt9;
+
+    @FXML
     private SplitMenuButton split;
 
     @FXML
@@ -44,9 +49,8 @@ public class Controladormenu {
 
     @FXML
     private TreeView<EspacioGeografico> treePaises;
-
-    ObservableList<Memento> mementos = FXCollections.observableArrayList();
     // ListView que usa la lista observable
+    ObservableList<Memento> mementos = FXCollections.observableArrayList();
     @FXML
     ListView<Memento> flist;
     @FXML
@@ -58,6 +62,144 @@ public class Controladormenu {
 
     private String tipoSeleccionado = "";
 
+    private Publisher publisher;
+
+    @FXML
+    void select(ActionEvent event) {
+        MenuItem item = (MenuItem) event.getSource();
+        tipoSeleccionado = item.getText();
+        split.setText(tipoSeleccionado);
+    }
+    boolean ini=true;
+    @FXML
+    void Click(ActionEvent event) {
+        Object source = event.getSource();
+        if (source == btt1) { // Crear
+            crearPasaporte();
+        } else if (source == btt2) { // Actualizar
+            actualizarPasaporte();
+        } else if (source == btt3) { // Eliminar
+            eliminarPasaporte();
+        } else if (source == btt4) { // Consultar
+            consultarPasaporte();
+        } else if (source == btt5) { // Consultar todos
+            consultarTodos();
+        } else if (source == btt6) { //Show tree
+            showTree();
+        } else if (source == btt7) { //Memento
+            if(ini) {
+                init();
+                ini=false;
+            }
+            guardar();
+        }else if (source == btt8) {
+            restaurar();
+        }
+        else if (source == btt9) {
+            mostrarMemento();
+        }
+    }
+    CareTaker CT;
+    AdaptadorPasaporte aapp=new AdaptadorPasaporte(null);
+    String codigo, nombre, mision, tipo;
+    private void init(){
+        publisher=new Publisher();
+        publisher.suscribe(new MigracionColombia());
+        publisher.suscribe(new Policia());
+        publisher.suscribe(new Cancilleria());
+        mementos = FXCollections.observableArrayList();
+        flist.setItems(mementos);
+        flist.setCellFactory(lv  -> new ListCell<>() {
+            @Override
+            protected void updateItem(Memento item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    // Mostrar el índice 1-indexado
+                    int index = getIndex() + 1;
+                    setText("Estado #" + index);
+                }
+            }
+        });
+    }
+    private void mostrarMemento(){
+        int indice = flist.getSelectionModel().getSelectedIndex();
+        if(indice==-1){
+            mostrarAlerta("Error","No seleccionaste ningun elemento para restauras");
+            return;
+        }
+        Memento m=CT.undo(indice);
+        String s="";
+        s+="Codigo: "+m.getId()+"\n";
+        s+="Titular: "+m.getTitular()+"\n";
+        s+="Pais: "+m.getPais()+"\n";
+        s+="Fecha de expedicion: 5/11/2025\n";
+        s+="Elemento de seguridad: Biometrico\n";
+        if(m.getMision()!=null)
+            s = "Pasaporte Diplomatico\n"+s+"Mision: "+m.getMision();
+        else
+            s = "Pasaporte Ordinario\n"+s+"Razon de viaje: "+m.getRazonDeViaje();
+        mostrarAlerta("Estado Seleccionado",s);
+    }
+    private void restaurar(){
+        int indice = flist.getSelectionModel().getSelectedIndex();
+        if(indice==-1){
+            mostrarAlerta("Error","No seleccionaste ningun elemento para restauras");
+            return;
+        }
+        Pasaporte p=aapp.restore(CT.undo(indice));
+        txt1.setText(p.getId());
+        txt2.setText(p.getTitular());
+        if(p instanceof PasaporteDiplomatico){
+            PasaporteDiplomatico pd=(PasaporteDiplomatico)p;
+            txt3.setText(pd.getMision());
+        }
+        else {
+            PasaporteOrdinario pd=(PasaporteOrdinario)p;
+            txt3.setText(pd.getRazonDeViaje());
+        }
+    }
+
+    private void guardar() {
+        boolean flag=false;
+        if(CT==null) {
+            CT = new CareTaker();
+            flag=true;
+        }
+        if (tipoSeleccionado.isEmpty()) {
+            mostrarAlerta("Error", "Debe seleccionar un tipo de pasaporte.");
+            return;
+        }
+        Pasaporte pasaporte;
+        if (tipoSeleccionado.equals("Ordinario")) {
+            PasaporteOrdinario po = new PasaporteOrdinario();
+            po.setId(txt1.getText());
+            po.setTitular(txt2.getText());
+            po.setFechaEx("14/09/2025");
+            po.setPais(cur.toString());
+            po.setRazonDeViaje(txt3.getText());
+            pasaporte = po;
+        } else {
+            PasaporteDiplomatico pd = new PasaporteDiplomatico();
+            pd.setId(txt1.getText());
+            pd.setTitular(txt2.getText());
+            pd.setFechaEx("14/09/2025");
+            pd.setPais(cur.toString());
+            pd.setMision(txt3.getText());
+            pasaporte = pd;
+        }
+        aapp=new AdaptadorPasaporte(pasaporte);
+        CT.add(aapp.save());
+        mementos.clear();
+        mementos.addAll(CT.getHistory());
+        if(flag)
+            crearPasaporte();
+        else {
+            actualizarPasaporte();
+            mostrarAlerta("Entidades notificadas del cambio", publisher.notify(pasaporte.getId()));
+        }
+    }
     public void showTree() {
         Region raiz = new Region("Colombia");
         Region region1 = new Region("Andina");
@@ -115,116 +257,6 @@ public class Controladormenu {
             }
         });
     }
-
-    @FXML
-    void select(ActionEvent event) {
-        MenuItem item = (MenuItem) event.getSource();
-        tipoSeleccionado = item.getText();
-        split.setText(tipoSeleccionado);
-    }
-    boolean ini=true;
-    @FXML
-    void Click(ActionEvent event) {
-        Object source = event.getSource();
-        if (source == btt1) { // Crear
-            crearPasaporte();
-        } else if (source == btt2) { // Actualizar
-            actualizarPasaporte();
-        } else if (source == btt3) { // Eliminar
-            eliminarPasaporte();
-        } else if (source == btt4) { // Consultar
-            consultarPasaporte();
-        } else if (source == btt5) { // Consultar todos
-            consultarTodos();
-        } else if (source == btt6) { //Show tree
-            showTree();
-        } else if (source == btt7) { //Memento
-            if(ini) {
-                init();
-                ini=false;
-            }
-            guardar();
-        }else if (source == btt8) {
-            restaurar();
-        }
-    }
-    CareTaker CT;
-    AdaptadorPasaporte aapp=new AdaptadorPasaporte(null);
-    String codigo, nombre, mision, tipo;
-    private void init(){
-        mementos = FXCollections.observableArrayList();
-        flist.setItems(mementos);
-        flist.setCellFactory(lv  -> new ListCell<>() {
-            @Override
-            protected void updateItem(Memento item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    // Mostrar el índice 1-indexado
-                    int index = getIndex() + 1;
-                    setText("Estado #" + index);
-                }
-            }
-        });
-    }
-    private void restaurar(){
-        int indice = flist.getSelectionModel().getSelectedIndex();
-        if(indice==-1){
-            mostrarAlerta("Error","No seleccionaste ningun elemento para restauras");
-            return;
-        }
-        Pasaporte p=aapp.restore(CT.undo(indice));
-        txt1.setText(p.getId());
-        txt2.setText(p.getTitular());
-        if(p instanceof PasaporteDiplomatico){
-            PasaporteDiplomatico pd=(PasaporteDiplomatico)p;
-            txt3.setText(pd.getMision());
-        }
-        else {
-            PasaporteOrdinario pd=(PasaporteOrdinario)p;
-            txt3.setText(pd.getRazonDeViaje());
-        }
-    }
-
-    private void guardar() {
-        boolean flag=false;
-        if(CT==null) {
-            CT = new CareTaker();
-            flag=true;
-        }
-        if (tipoSeleccionado.isEmpty()) {
-            mostrarAlerta("Error", "Debe seleccionar un tipo de pasaporte.");
-            return;
-        }
-        Pasaporte pasaporte;
-        if (tipoSeleccionado.equals("Ordinario")) {
-            PasaporteOrdinario po = new PasaporteOrdinario();
-            po.setId(txt1.getText());
-            po.setTitular(txt2.getText());
-            po.setFechaEx("14/09/2025");
-            po.setPais(cur.toString());
-            po.setRazonDeViaje(txt3.getText());
-            pasaporte = po;
-        } else {
-            PasaporteDiplomatico pd = new PasaporteDiplomatico();
-            pd.setId(txt1.getText());
-            pd.setTitular(txt2.getText());
-            pd.setFechaEx("14/09/2025");
-            pd.setPais(cur.toString());
-            pd.setMision(txt3.getText());
-            pasaporte = pd;
-        }
-        AdaptadorPasaporte ap=new AdaptadorPasaporte(pasaporte);
-        CT.add(ap.save());
-        mementos.clear();
-        mementos.addAll(CT.getHistory());
-        if(flag)
-            crearPasaporte();
-        else
-            actualizarPasaporte();
-    }
-
     private void crearPasaporte() {
         if (tipoSeleccionado.isEmpty()) {
             mostrarAlerta("Error", "Debe seleccionar un tipo de pasaporte.");
@@ -237,7 +269,7 @@ public class Controladormenu {
 
             PasaporteOrdinario po = new PasaporteOrdinario();
             po.setId(txt1.getText());
-            po.setTitular(nombre);
+            po.setTitular(txt2.getText());
             po.setFechaEx("14/09/2025");
             po.setPais(cur.toString());
             po.setRazonDeViaje(txt3.getText());
@@ -245,7 +277,7 @@ public class Controladormenu {
         } else {
             PasaporteDiplomatico pd = new PasaporteDiplomatico();
             pd.setId(txt1.getText());
-            pd.setTitular(nombre);
+            pd.setTitular(txt2.getText());
             pd.setFechaEx("14/09/2025");
             pd.setPais(cur.toString());
             pd.setMision(txt3.getText());
