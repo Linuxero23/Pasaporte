@@ -177,6 +177,14 @@ public class Controladormenu {
         Pasaporte p=aapp.restore(CT.undo(indice));
         txt1.setText(p.getId());
         txt2.setText(p.getTitular());
+        if(p instanceof PasaporteDiplomatico){
+            PasaporteDiplomatico pd=(PasaporteDiplomatico)p;
+            txt3.setText(pd.getMision());
+        }
+        else {
+            PasaporteOrdinario pd=(PasaporteOrdinario)p;
+            txt3.setText(pd.getRazonDeViaje());
+        }
     }
 
     private void guardar() {
