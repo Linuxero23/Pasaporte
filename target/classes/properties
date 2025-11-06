@@ -1,3 +1,0 @@
-# Configuración de la base de datos
-db.url=jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:6543/postgres?sslmode=require
-db.driver=org.postgresql.Driver
