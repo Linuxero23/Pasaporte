@@ -1,13 +1,13 @@
 package co.poli.edu.actividad1.servicios;
 
 public class Memento {
-    protected String id;
-    protected String titular;
-    protected String fechaEx;
-    protected String pais;
+    private String id;
+    private String titular;
+    private String fechaEx;
+    private String pais;
     private String idElemento;
-    protected String mision;
-    protected String razonDeViaje;
+    private String mision;
+    private  String razonDeViaje;
     public Memento() {}
 
     public String getId() {
