@@ -23,11 +23,12 @@
          </font>
       </Label>
       <TextField fx:id="txt1" layoutX="47.0" layoutY="90.0" promptText="Id" />
-      <TextField fx:id="txt2" layoutX="287.0" layoutY="90.0" promptText="Nombres" />
+      <TextField fx:id="txt2" layoutX="287.0" layoutY="90.0" promptText="País" />
       <SplitMenuButton fx:id="split" layoutX="47.0" layoutY="138.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Tipo de pasaporte" AnchorPane.leftAnchor="47.0">
          <items>
             <MenuItem fx:id="opt1" mnemonicParsing="false" onAction="#select" text="Diplomático" />
             <MenuItem fx:id="opt2" mnemonicParsing="false" onAction="#select" text="Ordinario" />
+            <MenuItem fx:id="opt3" mnemonicParsing="false" onAction="#select" text="Emergencia" />
          </items>
       </SplitMenuButton>
       <Label layoutX="101.0" layoutY="25.0" prefHeight="34.0" prefWidth="286.0" text="Ingrese la siguiente información">
@@ -43,5 +44,6 @@
       <ListView fx:id="flist" layoutX="707.0" layoutY="363.0" prefHeight="240.0" prefWidth="222.0" />
       <Button fx:id="btt9" layoutX="576.0" layoutY="560.0" mnemonicParsing="false" onAction="#Click" text="Mostrar" />
       <Button fx:id="bttCommand" layoutX="100.0" layoutY="573.0" mnemonicParsing="false" onAction="#Click" text="Visa" />
+      <Button fx:id="btt10" layoutX="203.0" layoutY="572.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="114.0" text="Valor pasaporte" />
    </children>
 </AnchorPane>

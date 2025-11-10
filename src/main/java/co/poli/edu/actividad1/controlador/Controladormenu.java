@@ -42,6 +42,9 @@ public class Controladormenu {
     public Button bttCommand;
 
     @FXML
+    public Button btt10;
+
+    @FXML
     private SplitMenuButton split;
 
     @FXML
@@ -104,7 +107,52 @@ public class Controladormenu {
         else if(source==bttCommand){
             cosoVisa();
         }
+        else if(source == btt10){
+            costos();
+        }
     }
+
+    private void costos(){
+
+        if(tipoSeleccionado.equals("Ordinario") && !txt2.getText().isEmpty()){
+
+            PrecioPasaporte costo = new PrecioPasaporte(new StrategyCostoOrdinario());
+            double precio = costo.CalcularPrecio(txt2.getText());
+
+            if(precio == -1){
+                mostrarAlerta("Error", "Ingrese un país válido");
+            }else{
+                mostrarAlerta("Precio", "El precio de su pasaporte en dólares es: $"+ precio);
+            }
+            return;
+
+        }
+        else if(tipoSeleccionado.equals("Diplomático") && !txt2.getText().isEmpty()){
+            PrecioPasaporte costo = new PrecioPasaporte(new StrategyCostoDiplomatico());
+            double precio = costo.CalcularPrecio(txt2.getText());
+
+            if(precio == -1){
+                mostrarAlerta("Error", "Ingrese un país válido");
+            }else{
+                mostrarAlerta("Precio", "El precio de su pasaporte en dólares es: $"+ precio);
+            }
+            return;
+
+        }
+        else if(tipoSeleccionado.equals("Emergencia") && !txt2.getText().isEmpty()){
+            PrecioPasaporte costo = new PrecioPasaporte(new StrategyCostoEmergencia());
+            double precio = costo.CalcularPrecio(txt2.getText());
+
+            if(precio == -1){
+                mostrarAlerta("Error", "Ingrese un país válido");
+            }else{
+                mostrarAlerta("Precio", "El precio de su pasaporte en dólares es: $"+ precio);
+            }
+
+        }
+    }
+
+
     private void cosoVisa(){
         String id=txt1.getText();
         String nombre=txt2.getText();
