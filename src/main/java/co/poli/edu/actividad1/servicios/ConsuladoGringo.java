@@ -1,10 +1,11 @@
 package co.poli.edu.actividad1.servicios;
 
 public class ConsuladoGringo {
-    public String aceptar(){
-        return "¡Feliciataciones, su visa fue aprobada!";
+    private Command command;
+    public void setCommand(Command c){
+        command = c;
     }
-    public String negar(){
-        return "¡Por desgracia su visa no fue aceptada!";
+    public String ejecutarCommand(){
+        return command.ejecutar();
     }
 }

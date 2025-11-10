@@ -1,4 +1,11 @@
 package co.poli.edu.actividad1.servicios;
 
-public class CommandNegarVisa {
+public class CommandNegarVisa implements Command {
+    private AdaptadorTitular titular;
+    CommandNegarVisa(AdaptadorTitular titular) {
+        this.titular = titular;
+    }
+    public String ejecutar(){
+        return titular.negar();
+    }
 }

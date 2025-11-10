@@ -1,4 +1,11 @@
 package co.poli.edu.actividad1.servicios;
 
-public class CommandAceptarVisa {
+public class CommandAceptarVisa implements Command {
+    private AdaptadorTitular titular;
+    CommandAceptarVisa(AdaptadorTitular titular) {
+        this.titular = titular;
+    }
+    public String ejecutar(){
+        return titular.aceptar();
+    }
 }
