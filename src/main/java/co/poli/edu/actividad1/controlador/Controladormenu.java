@@ -39,6 +39,9 @@ public class Controladormenu {
     public Button btt9;
 
     @FXML
+    public Button bttCommand;
+
+    @FXML
     private SplitMenuButton split;
 
     @FXML
@@ -97,6 +100,27 @@ public class Controladormenu {
         }
         else if (source == btt9) {
             mostrarMemento();
+        }
+        else if(source==bttCommand){
+            cosoVisa();
+        }
+    }
+    private void cosoVisa(){
+        String id=txt1.getText();
+        String nombre=txt2.getText();
+        Titular t=new Titular(id,nombre, "Ayer");
+        AdaptadorTitular at=new AdaptadorTitular(t);
+        CommandAceptarVisa ca=new CommandAceptarVisa(at);
+        CommandNegarVisa cn=new CommandNegarVisa(at);
+        ConsuladoGringo cg=new ConsuladoGringo();
+        double r=Math.random();
+        if(r<=0.3){
+            cg.setCommand(ca);
+            mostrarAlerta("Desicion del consulado",cg.ejecutarCommand());
+        }
+        else{
+            cg.setCommand(cn);
+            mostrarAlerta("Desicion del consulado",cg.ejecutarCommand());
         }
     }
     CareTaker CT;
