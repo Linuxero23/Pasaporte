@@ -11,4 +11,10 @@ public class AdaptadorTitular implements InterfazTitular {
     public String getDescripcion() {
         return t.toString();
     }
+    public String aceptar(){
+        return "¡Feliciataciones "+t.getNombre()+", su visa fue aprobada!";
+    }
+    public String negar(){
+        return "¡Lo sentimos "+t.getNombre()+", por desgracia su visa no fue aceptada!";
+    }
 }

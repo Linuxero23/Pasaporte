@@ -1,65 +1,63 @@
 package co.poli.edu.actividad1.servicios;
 
-import co.poli.edu.actividad1.modelo.Pasaporte;
-import co.poli.edu.actividad1.modelo.PasaporteDiplomatico;
-import co.poli.edu.actividad1.modelo.PasaporteOrdinario;
-
-import java.util.Arrays;
+import co.poli.edu.actividad1.modelo.*;
+import co.poli.edu.actividad1.servicios.*;
 
 public class AdaptadorPasaporte implements InterfacePasaporte {
-    private final Pasaporte pasaporte;
+    private PasaporteOrdinario pasaporteO;
+    private PasaporteDiplomatico pasaporteD;
 
     public AdaptadorPasaporte(Pasaporte pasaporte) {
-        this.pasaporte = pasaporte;
+        if(pasaporte instanceof PasaporteOrdinario)
+            pasaporteO=(PasaporteOrdinario)pasaporte;
+        else
+            pasaporteD=(PasaporteDiplomatico) pasaporte;
     }
 
     @Override
     public String getDescripcion() {
-        String s=  pasaporte.getId() +
-                "\n" + pasaporte.getTitular() +
-                "\n" + pasaporte.getPais() +
-                "\n" + pasaporte.getFechaEx() +
-                "\n" + pasaporte.getIdElemento();
-        if(pasaporte instanceof PasaporteOrdinario){
-            PasaporteOrdinario ord = (PasaporteOrdinario) pasaporte;
-            s+="\nRZ "+ord.getRazonDeViaje();
-        }
-        else {
-            PasaporteDiplomatico ord = (PasaporteDiplomatico) pasaporte;
-            s+="\nMS "+ord.getMision();
-        }
-        return s;
+        if(pasaporteO==null)
+            return pasaporteD.toString();
+        return pasaporteO.toString();
     }
     public Memento save(){
-        return new Memento(this);
+        Memento cur=new Memento();
+        if(pasaporteO!=null){
+            cur.setId(pasaporteO.getId());
+            cur.setPais(pasaporteO.getPais());
+            cur.setTitular(pasaporteO.getTitular());
+            cur.setIdElemento(pasaporteO.getIdElemento());
+            cur.setFechaEx(pasaporteO.getFechaEx());
+            cur.setRazonDeViaje(pasaporteO.getRazonDeViaje());
+        }
+        else{
+            cur.setId(pasaporteD.getId());
+            cur.setPais(pasaporteD.getPais());
+            cur.setTitular(pasaporteD.getTitular());
+            cur.setIdElemento(pasaporteD.getIdElemento());
+            cur.setFechaEx(pasaporteD.getFechaEx());
+            cur.setMision(pasaporteD.getMision());
+        }
+        return cur;
     }
     public Pasaporte restore(Memento memento){
-        String s=memento.getState();
-        String[] arr = s.split("\\R");
-        if (arr[arr.length - 1].contains("RZ")) {
-            PasaporteOrdinario p = new PasaporteOrdinario();
-            p.setId(arr[0]);
-            p.setTitular(arr[1]);
-            p.setPais(arr[2]);
-            p.setFechaEx(arr[3]);
-            p.setElemento(arr[4]);
-            String[] arr2 = arr[arr.length - 1].split(" ", 2);
-            p.setRazonDeViaje(arr2[1]);
-            return p;
-        } else {
-            PasaporteDiplomatico p = new PasaporteDiplomatico();
-            p.setId(arr[0]);
-            p.setTitular(arr[1]);
-            p.setPais(arr[2]);
-            p.setFechaEx(arr[3]);
-            p.setElemento(arr[4]);
-            String[] arr2 = arr[arr.length - 1].split(" ", 2);
-            p.setMision(arr2[1]);
-            return p;
+        if(memento.getMision()==null){
+            PasaporteOrdinario ord=new PasaporteOrdinario();
+            ord.setId(memento.getId());
+            ord.setPais(memento.getPais());
+            ord.setTitular(memento.getTitular());
+            ord.setElemento(memento.getIdElemento());
+            ord.setFechaEx(memento.getFechaEx());
+            ord.setRazonDeViaje(memento.getRazonDeViaje());
+            return ord;
         }
-
-    }
-    public Pasaporte getPasaporte() {
-        return pasaporte;
+        PasaporteDiplomatico ord=new PasaporteDiplomatico();
+        ord.setId(memento.getId());
+        ord.setPais(memento.getPais());
+        ord.setTitular(memento.getTitular());
+        ord.setElemento(memento.getIdElemento());
+        ord.setFechaEx(memento.getFechaEx());
+        ord.setMision(memento.getMision());
+        return ord;
     }
 }
