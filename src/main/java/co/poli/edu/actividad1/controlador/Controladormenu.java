@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import java.util.*;
 
 public class Controladormenu {
 
@@ -26,13 +27,20 @@ public class Controladormenu {
     @FXML public Button btt8;
     @FXML public Button btt9;
     @FXML public Button bttCommand;
-    @FXML public Button btt10;
+    @FXML public Button btt10; // Costos
+
+    @FXML
+    public Button btt11; // Estado
 
     @FXML private SplitMenuButton split;
     @FXML private TextField txt1; // ID
     @FXML private TextField txt2; // Nombre o titular
     @FXML private TextField txt3; // Misión o motivo de viaje
     @FXML private TreeView<EspacioGeografico> treePaises;
+
+    @FXML
+    private TreeView<String> treeEstados;
+
     @FXML ListView<Memento> flist;
 
     ObservableList<Memento> mementos = FXCollections.observableArrayList();
@@ -124,6 +132,58 @@ public class Controladormenu {
         else if (source == btt9) mostrarMemento();
         else if (source == bttCommand) cosoVisa();
         else if (source == btt10) costos();
+        else if(source == btt11){
+            estados();
+        }
+    }
+
+    private void estados() {
+        Pais pais = new Pais("1", txt2.getText(), new ArrayList<>());
+        AdaptadorPais adaptador = new AdaptadorPais(pais);
+        TreeItem<String> rootItem = new TreeItem<>("Estado actual: " + adaptador.getEstado().getClass().getSimpleName());
+        rootItem.setExpanded(true);
+
+        for (EstadoPais hijo : adaptador.obtenerEstadosDisponibles()) {
+            rootItem.getChildren().add(new TreeItem<>(hijo.getClass().getSimpleName()));
+        }
+
+        treeEstados.setRoot(rootItem);
+        treeEstados.setShowRoot(true);
+
+        treeEstados.setOnMouseClicked(event -> {
+            TreeItem<String> selectedItem = treeEstados.getSelectionModel().getSelectedItem();
+            if (selectedItem != null && selectedItem != rootItem) {
+                String seleccionado = selectedItem.getValue();
+                EstadoPais nuevo = obtenerEstadoDesdeNombre(seleccionado);
+
+                if (nuevo != null) {
+                    adaptador.cambiarEstado(nuevo);
+
+                    mostrarAlerta("Cambio de estado", "El país tiene "+ adaptador.mostrarEstado());
+                    TreeItem<String> nuevaRaiz = new TreeItem<>("Estado actual: " + adaptador.getEstado().getClass().getSimpleName());
+                    for (EstadoPais hijo : adaptador.obtenerEstadosDisponibles()) {
+                        nuevaRaiz.getChildren().add(new TreeItem<>(hijo.getClass().getSimpleName()));
+                    }
+
+                    treeEstados.setRoot(nuevaRaiz);
+                    treeEstados.getRoot().setExpanded(true);
+                }
+            }
+        });
+    }
+
+    private EstadoPais obtenerEstadoDesdeNombre(String nombre) {
+        if (nombre.equals("EstadoNormal")) {
+            return new EstadoNormal();
+        } else if (nombre.equals("EstadoRevision")) {
+            return new EstadoRevision();
+        } else if (nombre.equals("SolicitudVisa")) {
+            return new SolicitudVisa();
+        } else if (nombre.equals("FronteraCerrada")) {
+            return new FronteraCerrada();
+        } else {
+            return null;
+        }
     }
 
     private void costos() {
