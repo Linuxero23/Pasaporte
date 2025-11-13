@@ -1,4 +1,6 @@
 package co.poli.edu.actividad1.servicios;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FronteraCerrada implements EstadoPais{
 
@@ -13,5 +15,14 @@ public class FronteraCerrada implements EstadoPais{
         if (nuevoEstado instanceof EstadoNormal || nuevoEstado instanceof SolicitudVisa) {
             pais.setEstado(nuevoEstado);
         }
+    }
+
+    @Override
+    public List<EstadoPais> obtenerEstadosDisponibles() {
+        List<EstadoPais> disponibles = new ArrayList<>();
+        disponibles.add(new EstadoNormal());
+        disponibles.add(new SolicitudVisa());
+
+        return disponibles;
     }
 }

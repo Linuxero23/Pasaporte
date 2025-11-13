@@ -1,4 +1,6 @@
 package co.poli.edu.actividad1.servicios;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EstadoRevision implements EstadoPais{
 
@@ -13,8 +15,13 @@ public class EstadoRevision implements EstadoPais{
         if (nuevoEstado instanceof SolicitudVisa) {
             pais.setEstado(nuevoEstado);
         }
+    }
 
+    @Override
+    public List<EstadoPais> obtenerEstadosDisponibles() {
+        List<EstadoPais> disponibles = new ArrayList<>();
+        disponibles.add(new SolicitudVisa());
 
-
+        return disponibles;
     }
 }
