@@ -1,5 +1,6 @@
 package co.poli.edu.actividad1.servicios;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class EstadoNormal implements EstadoPais {
 
@@ -15,5 +16,14 @@ public class EstadoNormal implements EstadoPais {
             pais.setEstado(nuevoEstado);
 
         }
+    }
+
+    @Override
+    public List<EstadoPais> obtenerEstadosDisponibles() {
+        List<EstadoPais> disponibles = new ArrayList<>();
+        disponibles.add(new EstadoRevision());
+        disponibles.add(new SolicitudVisa());
+        disponibles.add(new FronteraCerrada());
+        return disponibles;
     }
 }
