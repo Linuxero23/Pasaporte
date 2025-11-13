@@ -143,7 +143,7 @@ public class Controladormenu {
         TreeItem<String> rootItem = new TreeItem<>("Estado actual: " + adaptador.getEstado().getClass().getSimpleName());
         rootItem.setExpanded(true);
 
-        for (EstadoPais hijo : adaptador.obtenerEstadosDisponibles()) {
+        for (EstadoPais hijo : adaptador.getEstado().obtenerEstadosDisponibles()) {
             rootItem.getChildren().add(new TreeItem<>(hijo.getClass().getSimpleName()));
         }
 
@@ -161,7 +161,7 @@ public class Controladormenu {
 
                     mostrarAlerta("Cambio de estado", "El país tiene "+ adaptador.mostrarEstado());
                     TreeItem<String> nuevaRaiz = new TreeItem<>("Estado actual: " + adaptador.getEstado().getClass().getSimpleName());
-                    for (EstadoPais hijo : adaptador.obtenerEstadosDisponibles()) {
+                    for (EstadoPais hijo : nuevo.obtenerEstadosDisponibles()) {
                         nuevaRaiz.getChildren().add(new TreeItem<>(hijo.getClass().getSimpleName()));
                     }
 

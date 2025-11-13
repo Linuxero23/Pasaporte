@@ -32,8 +32,5 @@
             estadoActual.cambiarEstado(this, nuevoEstado);
         }
 
-        public List<EstadoPais> obtenerEstadosDisponibles() {
-            return estadoActual.obtenerEstadosDisponibles();
-        }
 
     }
