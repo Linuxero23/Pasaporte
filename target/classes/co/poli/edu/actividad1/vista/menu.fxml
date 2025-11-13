@@ -10,9 +10,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="951.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.poli.edu.actividad1.controlador.Controladormenu">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="951.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.poli.edu.actividad1.controlador.Controladormenu">
    <children>
-      <Button fx:id="btt4" layoutX="46.0" layoutY="295.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="134.0" text="Consultar pasaporte" />
       <Button fx:id="btt1" layoutX="46.0" layoutY="252.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="134.0" text="Crear pasaporte" />
       <Button fx:id="btt3" layoutX="196.0" layoutY="252.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="126.0" text="Eliminar pasaporte" />
       <Button fx:id="btt2" layoutX="193.0" layoutY="295.0" mnemonicParsing="false" onAction="#Click" prefHeight="26.0" prefWidth="134.0" text="Actualizar pasaporte" />
@@ -41,5 +40,7 @@
       <Button fx:id="btt7" layoutX="569.0" layoutY="418.0" mnemonicParsing="false" onAction="#Click" text="Guardar" />
       <Button fx:id="btt8" layoutX="573.0" layoutY="494.0" mnemonicParsing="false" onAction="#Click" text="Restore" />
       <ListView fx:id="flist" layoutX="707.0" layoutY="363.0" prefHeight="240.0" prefWidth="222.0" />
+      <Button fx:id="bttCadena" layoutX="144.0" layoutY="507.0" mnemonicParsing="false" onAction="#probarCadena" text="Probar Cadena" />
+      <Label fx:id="lblCadenaResultado" layoutX="113.0" layoutY="465.0" text="Resultado de la cadena: (esperando)" />
    </children>
 </AnchorPane>

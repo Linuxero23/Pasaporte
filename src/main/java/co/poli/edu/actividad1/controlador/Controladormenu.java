@@ -13,25 +13,28 @@ public class Controladormenu {
 
     public Button btt8;
     @FXML
-    private Button btt1; //Crear
+    private Button btt1; // Crear
 
     @FXML
-    private Button btt2; //Actualizar
+    private Button btt2; // Actualizar
 
     @FXML
-    private Button btt3; //Eliminar
+    private Button btt3; // Eliminar
 
     @FXML
-    private Button btt4; //Consultar uno
+    private Button btt4; // Consultar uno
 
     @FXML
-    private Button btt5; //Consultar todos
+    private Button btt5; // Consultar todos
 
     @FXML
     private Button btt6;
 
     @FXML
     private Button btt7;
+
+    @FXML
+    private Button bttCadena; // NUEVO botón para probar la cadena
 
     @FXML
     private SplitMenuButton split;
@@ -46,11 +49,13 @@ public class Controladormenu {
     private TreeView<EspacioGeografico> treePaises;
 
     ObservableList<Memento> mementos = FXCollections.observableArrayList();
-    // ListView que usa la lista observable
     @FXML
-    ListView<Memento> flist;
+    private ListView<Memento> flist;
     @FXML
     private TextField txt3; // Misión o motivo de viaje
+
+    @FXML
+    private Label lblCadenaResultado; // NUEVO label para mostrar resultado
 
     private EspacioGeografico cur;
 
@@ -84,16 +89,11 @@ public class Controladormenu {
         region5.add(ciudad4);
         region4.add(ciudad5);
         region4.add(ciudad6);
-        // Supongamos que tienes un EspacioGeografico raíz
 
-        // Lo envuelves en un TreeItem
         TreeItem<EspacioGeografico> rootItem = new TreeItem<>(raiz);
         rootItem.setExpanded(true);
-
-        // Asignar raíz al tree
         treePaises.setRoot(rootItem);
 
-        // Manejar clicks en nodos
         treePaises.setOnMouseClicked(event -> {
             TreeItem<EspacioGeografico> selectedItem = treePaises.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
@@ -101,17 +101,14 @@ public class Controladormenu {
                 cur = eg;
                 if (eg instanceof Region) {
                     if (selectedItem.getChildren().isEmpty()) {
-                        // Expandir: agregar los hijos al tree
                         Region region = (Region) eg;
                         for (EspacioGeografico hijo : region.getChildren()) {
                             selectedItem.getChildren().add(new TreeItem<>(hijo));
                         }
                     } else {
-                        // Contraer: eliminar los hijos
                         selectedItem.getChildren().clear();
                     }
                 }
-                // Si es un país u otro tipo de EspacioGeografico, no pasa nada
             }
         });
     }
@@ -122,68 +119,74 @@ public class Controladormenu {
         tipoSeleccionado = item.getText();
         split.setText(tipoSeleccionado);
     }
-    boolean ini=true;
+
+    boolean ini = true;
+
     @FXML
     void Click(ActionEvent event) {
         Object source = event.getSource();
-        if (source == btt1) { // Crear
+        if (source == btt1) {
             crearPasaporte();
-        } else if (source == btt2) { // Actualizar
+        } else if (source == btt2) {
             actualizarPasaporte();
-        } else if (source == btt3) { // Eliminar
+        } else if (source == btt3) {
             eliminarPasaporte();
-        } else if (source == btt4) { // Consultar
+        } else if (source == btt4) {
             consultarPasaporte();
-        } else if (source == btt5) { // Consultar todos
+        } else if (source == btt5) {
             consultarTodos();
-        } else if (source == btt6) { //Show tree
+        } else if (source == btt6) {
             showTree();
-        } else if (source == btt7) { //Memento
-            if(ini) {
+        } else if (source == btt7) {
+            if (ini) {
                 init();
-                ini=false;
+                ini = false;
             }
             guardar();
-        }else if (source == btt8) {
+        } else if (source == btt8) {
             restaurar();
+        } else if (source == bttCadena) { // NUEVO botón
+            probarCadena(event);
         }
     }
+
     CareTaker CT;
-    AdaptadorPasaporte aapp=new AdaptadorPasaporte(null);
+    AdaptadorPasaporte aapp = new AdaptadorPasaporte(null);
     String codigo, nombre, mision, tipo;
-    private void init(){
+
+    private void init() {
         mementos = FXCollections.observableArrayList();
         flist.setItems(mementos);
-        flist.setCellFactory(lv  -> new ListCell<>() {
+        flist.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Memento item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    // Mostrar el índice 1-indexado
                     int index = getIndex() + 1;
                     setText("Estado #" + index);
                 }
             }
         });
     }
-    private void restaurar(){
+
+    private void restaurar() {
         int indice = flist.getSelectionModel().getSelectedIndex();
-        if(indice==-1){
-            mostrarAlerta("Error","No seleccionaste ningun elemento para restauras");
+        if (indice == -1) {
+            mostrarAlerta("Error", "No seleccionaste ningún elemento para restaurar");
             return;
         }
-        Pasaporte p=aapp.restore(CT.undo(indice));
+        Pasaporte p = aapp.restore(CT.undo(indice));
         txt1.setText(p.getId());
         txt2.setText(p.getTitular());
     }
 
     private void guardar() {
-        boolean flag=false;
-        if(CT==null) {
+        boolean flag = false;
+        if (CT == null) {
             CT = new CareTaker();
-            flag=true;
+            flag = true;
         }
         if (tipoSeleccionado.isEmpty()) {
             mostrarAlerta("Error", "Debe seleccionar un tipo de pasaporte.");
@@ -207,46 +210,64 @@ public class Controladormenu {
             pd.setMision(txt3.getText());
             pasaporte = pd;
         }
-        AdaptadorPasaporte ap=new AdaptadorPasaporte(pasaporte);
+        AdaptadorPasaporte ap = new AdaptadorPasaporte(pasaporte);
         CT.add(ap.save());
         mementos.clear();
         mementos.addAll(CT.getHistory());
-        if(flag)
+        if (flag)
             crearPasaporte();
         else
             actualizarPasaporte();
     }
 
     private void crearPasaporte() {
-        if (tipoSeleccionado.isEmpty()) {
+        if (tipoSeleccionado == null || tipoSeleccionado.isEmpty()) {
             mostrarAlerta("Error", "Debe seleccionar un tipo de pasaporte.");
+            return;
+        }
+
+        if (cur == null) {
+            mostrarAlerta("Error", "Debe seleccionar un país o región en el árbol.");
             return;
         }
 
         Pasaporte pasaporte;
 
-        if (tipoSeleccionado.equals("Ordinario")) {
+        String tipo = tipoSeleccionado.trim().toLowerCase(); // 🔥 normalizamos el texto
 
+        if (tipo.contains("ordinario")) {
             PasaporteOrdinario po = new PasaporteOrdinario();
             po.setId(txt1.getText());
-            po.setTitular(nombre);
+            po.setTitular(txt2.getText());
             po.setFechaEx("14/09/2025");
             po.setPais(cur.toString());
             po.setRazonDeViaje(txt3.getText());
             pasaporte = po;
-        } else {
+        } else if (tipo.contains("diplom")) { // 🔥 detecta "Diplomático" o "Diplomatico"
             PasaporteDiplomatico pd = new PasaporteDiplomatico();
             pd.setId(txt1.getText());
-            pd.setTitular(nombre);
+            pd.setTitular(txt2.getText());
             pd.setFechaEx("14/09/2025");
             pd.setPais(cur.toString());
-            pd.setMision(txt3.getText());
+            pd.setMision(txt3.getText()); // ✅ ahora se guarda la misión
             pasaporte = pd;
+        } else if (tipo.contains("emerg")) {
+            PasaporteEmergencia pe = new PasaporteEmergencia();
+            pe.setId(txt1.getText());
+            pe.setTitular(txt2.getText());
+            pe.setFechaEx("14/09/2025");
+            pe.setPais(cur.toString());
+            pasaporte = pe;
+        } else {
+            mostrarAlerta("Error", "Tipo de pasaporte no reconocido: " + tipoSeleccionado);
+            return;
         }
 
         String resultado = repo.insertar(pasaporte);
         mostrarAlerta("Resultado", resultado);
     }
+
+
 
     private void actualizarPasaporte() {
         String id = txt1.getText();
@@ -263,7 +284,7 @@ public class Controladormenu {
             ((PasaporteDiplomatico) pas).setMision(txt3.getText());
         }
 
-        pas.setTitular((txt2.getText()));
+        pas.setTitular(txt2.getText());
         pas.setPais(cur.toString());
         pas.setFechaEx("14/09/2025");
 
@@ -302,5 +323,40 @@ public class Controladormenu {
         alert.setTitle(titulo);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+
+    // ======= NUEVO MÉTODO: probar la cadena de responsabilidad =======
+    @FXML
+    private void probarCadena(ActionEvent event) {
+        if (tipoSeleccionado.isEmpty()) {
+            mostrarAlerta("Error", "Seleccione un tipo de pasaporte antes de probar la cadena.");
+            return;
+        }
+
+        Pasaporte pasaporte;
+        if (tipoSeleccionado.equals("Ordinario")) {
+            PasaporteOrdinario po = new PasaporteOrdinario();
+            po.setId("TEST001");
+            po.setTitular("Ordinario");
+            po.setPais("Colombia");
+            pasaporte = po;
+        } else if (tipoSeleccionado.equals("Diplomático")) {
+            PasaporteDiplomatico pd = new PasaporteDiplomatico();
+            pd.setId("TEST002");
+            pd.setTitular("Ejemplo Diplomático");
+            pd.setPais("Colombia");
+            pasaporte = pd;
+        } else {
+            PasaporteEmergencia pe = new PasaporteEmergencia();
+            pe.setId("TEST003");
+            pe.setTitular("Ejemplo Emergencia");
+            pe.setPais("Colombia");
+            pasaporte = pe;
+        }
+
+        PasaporteService servicio = new PasaporteService();
+        String resultado = servicio.procesarPasaporte(pasaporte);
+
+        lblCadenaResultado.setText("Resultado de la cadena: " + resultado);
     }
 }
